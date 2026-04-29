@@ -36,6 +36,14 @@ import {
   Heart,
 } from "lucide-react";
 
+function Linkedin({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.27zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+    </svg>
+  );
+}
+
 type Pub = { title: string; journal: string; year: number; cites: number | null; authors?: string; doi?: string };
 
 const publications: Pub[] = [
@@ -71,7 +79,7 @@ const research = [
   {
     icon: Heart,
     title: "Hemorrhagic Myocardial Infarction",
-    desc: "Investigating pathophysiological mechanisms using advanced large animal models at Indiana University Indianapolis.",
+    desc: "Investigating pathophysiological mechanisms of hemorrhagic myocardial infarction and heme-driven tissue injury at Indiana University Indianapolis.",
     tags: ["Translational", "Reperfusion injury"],
     metric: { value: "Current", label: "Focus area" },
   },
@@ -113,7 +121,7 @@ const research = [
 ];
 
 const experience = [
-  { role: "Postdoctoral Research Fellow", org: "Indiana University Indianapolis", dept: "Hemorrhagic myocardial infarction · Large animal models", period: "2025 — Present", location: "Indianapolis, IN", current: true },
+  { role: "Postdoctoral Research Fellow", org: "Indiana University Indianapolis", dept: "Hemorrhagic myocardial infarction · Heme-driven tissue injury", period: "2025 — Present", location: "Indianapolis, IN", current: true },
   { role: "Postdoctoral Research Fellow", org: "University of Cincinnati", dept: "NET formation in diabetic cardiomyopathy · Cardiac immunology", period: "2024 — 2025", location: "Cincinnati, OH" },
   { role: "Senior Research Fellow (ICMR)", org: "Indian Council of Medical Research", dept: "PM2.5 whole-body exposure · Multi-disease rat models · Langendorff", period: "2023 — 2024", location: "India" },
   { role: "Junior Research Fellow (DST)", org: "Department of Science & Technology", dept: "CRG/2021/000227 · Mitochondrial changes in myocardial IR under DPM exposure", period: "2022", location: "India" },
@@ -188,7 +196,7 @@ export default function Home() {
       <Navbar />
 
       {/* Hero */}
-      <section id="top" className="relative pt-32 pb-24 px-6 overflow-hidden">
+      <section id="top" className="relative pt-24 sm:pt-32 pb-16 sm:pb-24 px-5 sm:px-6 overflow-hidden">
         <Spotlight />
         <div className="absolute inset-0 -z-10">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,hsl(var(--foreground)/0.08),transparent)]" />
@@ -221,8 +229,30 @@ export default function Home() {
         <motion.div className="max-w-6xl mx-auto" style={{ opacity: heroOpacity }}>
           <div className="grid lg:grid-cols-[1fr_auto] gap-12 items-start">
             <div>
+              {/* Mobile-only avatar with pulsing ring */}
+              <motion.div
+                className="lg:hidden mb-6 flex items-center gap-4"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <motion.div
+                  className="relative h-20 w-20 rounded-full overflow-hidden ring-2 ring-[var(--heart)]/40 shadow-xl shadow-[var(--heart-soft)]"
+                  whileTap={{ scale: 0.96 }}
+                  animate={{ boxShadow: ["0 0 0 0 var(--heart-soft)", "0 0 0 14px transparent"] }}
+                  transition={{ duration: 2.4, repeat: Infinity, ease: "easeOut" }}
+                >
+                  <Image src="/bhavana.jpg" alt="Dr. Bhavana Sivakumar" fill sizes="80px" className="object-cover" priority />
+                </motion.div>
+                <div className="flex-1 min-w-0">
+                  <div className="text-[10px] font-mono tracking-wider text-[var(--heart)] flex items-center gap-1.5">
+                    <HeartbeatIcon size={10} /> LIVE · 72 BPM
+                  </div>
+                  <div className="text-xs text-muted-foreground mt-0.5">Postdoctoral Fellow · IU Indianapolis</div>
+                </div>
+              </motion.div>
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-                <Badge variant="secondary" className="mb-6 gap-2 py-1.5 px-3">
+                <Badge variant="secondary" className="mb-6 gap-2 py-1.5 px-3 hidden md:inline-flex">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
@@ -230,7 +260,7 @@ export default function Home() {
                   Postdoctoral Research Fellow · Indiana University Indianapolis
                 </Badge>
               </motion.div>
-              <h1 className="text-5xl md:text-7xl font-bold tracking-tight leading-[1.05]">
+              <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight leading-[1.05]">
                 <TextReveal text="Dr. Bhavana" />
                 <br />
                 <span className="bg-gradient-to-br from-foreground via-foreground to-foreground/50 bg-clip-text text-transparent">
@@ -238,7 +268,7 @@ export default function Home() {
                 </span>
               </h1>
               <motion.p
-                className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed"
+                className="mt-5 sm:mt-6 text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
@@ -272,6 +302,16 @@ export default function Home() {
                 <Magnetic>
                   <a href="mailto:bhavana95sivakumar@gmail.com" className={buttonVariants({ variant: "outline", size: "lg", className: "rounded-full" })}>
                     <Mail className="mr-1 h-4 w-4" /> Email
+                  </a>
+                </Magnetic>
+                <Magnetic>
+                  <a
+                    href="https://www.linkedin.com/in/bhavana-sivakumar"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={buttonVariants({ variant: "outline", size: "lg", className: "rounded-full hover:text-[#0A66C2] hover:border-[#0A66C2]/40" })}
+                  >
+                    <Linkedin className="mr-1 h-4 w-4" /> LinkedIn
                   </a>
                 </Magnetic>
               </motion.div>
@@ -338,7 +378,7 @@ export default function Home() {
       </section>
 
       {/* About */}
-      <section id="about" className="py-24 px-6 border-t">
+      <section id="about" className="py-16 sm:py-24 px-5 sm:px-6 border-t">
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-12">
           <FadeIn>
             <div className="text-xs font-mono text-muted-foreground mb-2">01 — ABOUT</div>
@@ -398,7 +438,7 @@ export default function Home() {
       </section>
 
       {/* Research */}
-      <section id="research" className="py-24 px-6 border-t bg-muted/30 relative overflow-hidden">
+      <section id="research" className="py-16 sm:py-24 px-5 sm:px-6 border-t bg-muted/30 relative overflow-hidden">
         <div className="absolute inset-0 -z-10 opacity-[0.03] text-foreground grain" />
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--heart)]/50 to-transparent" />
         <div className="max-w-6xl mx-auto">
@@ -471,7 +511,7 @@ export default function Home() {
       </section>
 
       {/* Experience + Education timeline */}
-      <section id="experience" className="py-24 px-6 border-t">
+      <section id="experience" className="py-16 sm:py-24 px-5 sm:px-6 border-t">
         <div className="max-w-6xl mx-auto">
           <FadeIn>
             <div className="text-xs font-mono text-muted-foreground mb-2">03 — EXPERIENCE</div>
@@ -549,7 +589,7 @@ export default function Home() {
       </section>
 
       {/* Publications + Chart */}
-      <section id="publications" className="py-24 px-6 border-t bg-muted/30">
+      <section id="publications" className="py-16 sm:py-24 px-5 sm:px-6 border-t bg-muted/30">
         <div className="max-w-6xl mx-auto">
           <FadeIn>
             <div className="text-xs font-mono text-muted-foreground mb-2">04 — PUBLICATIONS</div>
@@ -604,7 +644,7 @@ export default function Home() {
       </section>
 
       {/* Honors & Workshops */}
-      <section id="honors" className="py-24 px-6 border-t">
+      <section id="honors" className="py-16 sm:py-24 px-5 sm:px-6 border-t">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
           <div>
             <FadeIn>
@@ -681,7 +721,7 @@ export default function Home() {
       </section>
 
       {/* Contact */}
-      <section id="contact" className="py-24 px-6 border-t relative overflow-hidden">
+      <section id="contact" className="py-16 sm:py-24 px-5 sm:px-6 border-t relative overflow-hidden">
         <motion.div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[400px] w-[400px] rounded-full bg-gradient-to-r from-blue-400/10 via-purple-400/10 to-pink-400/10 blur-3xl -z-10"
           animate={{ rotate: 360 }}
@@ -709,16 +749,28 @@ export default function Home() {
                   <MapPin className="h-4 w-4" /> 75 W 18 St, Indianapolis, IN 46202
                 </div>
               </div>
-              <Magnetic>
-                <a href="mailto:bhavana95sivakumar@gmail.com" className={buttonVariants({ size: "lg", className: "mt-8 rounded-full" })}>
-                  <Mail className="mr-2 h-4 w-4" /> Send an email
-                </a>
-              </Magnetic>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Magnetic>
+                  <a href="mailto:bhavana95sivakumar@gmail.com" className={buttonVariants({ size: "lg", className: "rounded-full" })}>
+                    <Mail className="mr-2 h-4 w-4" /> Send an email
+                  </a>
+                </Magnetic>
+                <Magnetic>
+                  <a
+                    href="https://www.linkedin.com/in/bhavana-sivakumar"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={buttonVariants({ variant: "outline", size: "lg", className: "rounded-full hover:text-[#0A66C2] hover:border-[#0A66C2]/40" })}
+                  >
+                    <Linkedin className="mr-2 h-4 w-4" /> Connect on LinkedIn
+                  </a>
+                </Magnetic>
+              </div>
             </FadeIn>
             <Stagger className="grid sm:grid-cols-2 gap-3">
               <StaggerItem><ContactLink href="https://scholar.google.com/citations?user=1GZzUakAAAAJ&hl=en" label="Google Scholar" desc="Citations & profile" icon={BookOpen} /></StaggerItem>
               <StaggerItem><ContactLink href="https://www.researchgate.net/profile/Bhavana-Sivakumar" label="ResearchGate" desc="Research network" icon={Microscope} /></StaggerItem>
-              <StaggerItem><ContactLink href="https://www.linkedin.com/in/bhavana-sivakumar" label="LinkedIn" desc="Professional" icon={AtSign} /></StaggerItem>
+              <StaggerItem><ContactLink href="https://www.linkedin.com/in/bhavana-sivakumar" label="LinkedIn" desc="Active presence · DM open" icon={Linkedin} /></StaggerItem>
               <StaggerItem><ContactLink href="https://loop.frontiersin.org/people/989495/overview" label="Frontiers Loop" desc="Loop profile" icon={Activity} /></StaggerItem>
               <StaggerItem><ContactLink href="https://medicine.iu.edu/" label="IU School of Medicine" desc="Institution" icon={Atom} /></StaggerItem>
               <StaggerItem><ContactLink href="https://www.jpccr.eu/Author-Bhavana-Sivakumar/174696" label="JPCCR" desc="Author page" icon={LinkIcon} /></StaggerItem>
