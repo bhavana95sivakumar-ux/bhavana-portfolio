@@ -72,7 +72,7 @@ const research = [
     icon: Heart,
     title: "Hemorrhagic Myocardial Infarction",
     desc: "Investigating pathophysiological mechanisms using advanced large animal models at Indiana University Indianapolis.",
-    tags: ["Large animal models", "Translational", "Reperfusion injury"],
+    tags: ["Translational", "Reperfusion injury"],
     metric: { value: "Current", label: "Focus area" },
   },
   {
@@ -107,7 +107,7 @@ const research = [
     icon: FlaskConical,
     title: "Fisetin Pharmacology",
     desc: "Multi-route dosing (IP, IV, SC), pharmacokinetics, and mechanism studies of the flavonoid fisetin in IR injury.",
-    tags: ["Flavonoid", "Pharmacokinetics", "Cardioprotection"],
+    tags: ["Pharmacological studies"],
     metric: { value: "7+", label: "Studies" },
   },
 ];
@@ -243,10 +243,10 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
-                Biomedical scientist investigating{" "}
-                <span className="text-foreground font-medium">hemorrhagic myocardial infarction</span>,{" "}
-                <span className="text-foreground font-medium">mitochondrial bioenergetics</span>, and{" "}
-                <span className="text-foreground font-medium">air pollution–induced cardiotoxicity</span> in advanced animal models.
+                Translational cardiometabolic scientist with deep expertise in{" "}
+                <span className="text-foreground font-medium">in vivo pharmacology</span>,{" "}
+                <span className="text-foreground font-medium">cardiovascular disease models</span>, and{" "}
+                <span className="text-foreground font-medium">mitochondrial biology</span>. Proven track record of leading end-to-end experimental programs to uncover disease mechanisms and inform therapeutic target validation. Experienced in integrating physiology, molecular data, and clinical samples to drive translational insights.
               </motion.p>
               <motion.div
                 className="mt-4 flex items-center gap-4 text-sm text-muted-foreground flex-wrap"
@@ -324,7 +324,7 @@ export default function Home() {
               { n: 27, suffix: "+", l: "Publications" },
               { n: 312, suffix: "", l: "Citations" },
               { n: 11, suffix: "", l: "h-index" },
-              { n: 10, suffix: "+", l: "Journals reviewed" },
+              { n: 30, suffix: "+", l: "Journals reviewed" },
             ].map((s) => (
               <StaggerItem key={s.l} className="bg-background px-6 py-6 group hover:bg-muted/50 transition">
                 <div className="text-3xl md:text-4xl font-bold tracking-tight tabular-nums">
@@ -349,24 +349,37 @@ export default function Home() {
           </FadeIn>
           <FadeIn delay={0.15} className="md:col-span-2 space-y-5 text-muted-foreground leading-relaxed">
             <p className="text-foreground text-lg leading-relaxed">
-              Dr. Bhavana Sivakumar investigates how environmental insults and disease states drive cardiac
-              injury at the mitochondrial level — and how pharmacological, epigenetic, and immunological
-              interventions can reverse it.
+              Dr. Bhavana Sivakumar is a translational cardiovascular researcher whose work bridges
+              molecular pharmacology, mitochondrial biology, immunology, and cardiac pathology. Her research
+              focuses on understanding the cellular and molecular mechanisms that drive cardiac injury and
+              disease progression, with the goal of identifying therapeutic strategies that protect and
+              restore heart function.
             </p>
             <p>
-              She is currently a Postdoctoral Research Fellow at Indiana University Indianapolis, studying
-              hemorrhagic myocardial infarction in large animal models. Previously at the University of
-              Cincinnati, she examined neutrophil extracellular trap (NET) formation in diabetic
-              cardiomyopathy. Her doctoral work at SASTRA University under Dr. Gino A. Kurian earned the
-              Best PhD Thesis Award (Sciences) in 2024. Across roles, she has built whole-body PM2.5
-              exposure chambers, developed rat models of MI, diabetes, CKD, and uremic cardiomyopathy, and
-              authored 27+ peer-reviewed papers.
+              She is currently a Postdoctoral Research Fellow at Indiana University Indianapolis. Her
+              current research focuses on understanding the mechanisms by which an iron-containing molecule
+              called heme contributes to tissue injury after a hemorrhagic myocardial infarction, a severe
+              heart attack where blood seeps through damaged capillaries onto dying heart tissue after blood
+              flow is restored to a damaged artery. Her goal is to help scientists identify strategies that
+              could reduce or prevent this damage.
             </p>
             <p>
-              Her scientific portfolio spans cardiovascular toxicology, mitochondrial bioenergetics,
-              epigenetics, and cell-based pharmacology, with appearances in{" "}
-              <em>Frontiers in Pharmacology</em>, <em>Phytomedicine</em>, <em>Environmental Pollution</em>,
-              <em> Cardiovascular Toxicology</em>, <em>Cells</em>, and <em>Chemico-Biological Interactions</em>.
+              Previously, at the University of Cincinnati, she investigated immune-mediated mechanisms in
+              diabetic cardiomyopathy. Her doctoral research at SASTRA University focused on cardiovascular
+              injury and therapeutic intervention, earning her the Best PhD Thesis Award in Sciences in 2024.
+            </p>
+            <p>
+              Across her academic career, Dr. Sivakumar has developed expertise in cardiovascular disease
+              models, mitochondrial function, molecular pharmacology, immunology, epigenetics, and
+              cell-based research. She has contributed to more than 27 peer-reviewed publications in journals
+              including <em>Environmental Pollution</em>, <em>Frontiers in Pharmacology</em>,{" "}
+              <em>Phytomedicine</em>, <em>Journal of Environmental Sciences</em>,{" "}
+              <em>Cardiovascular Toxicology</em>, <em>Cells</em>, <em>Chemico-Biological Interactions</em>{" "}
+              and many others.
+            </p>
+            <p>
+              Her long-term research goal is to advance mechanistic discoveries into clinically meaningful
+              interventions that improve outcomes in cardiovascular disease.
             </p>
           </FadeIn>
         </div>
