@@ -242,16 +242,15 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               >
-                {/* Animated shimmer */}
+                {/* Smooth breathing glow */}
                 <motion.div
                   aria-hidden
                   className="absolute inset-0 pointer-events-none"
                   style={{
-                    background: "linear-gradient(120deg, transparent 30%, var(--heart-soft) 50%, transparent 70%)",
-                    backgroundSize: "300% 100%",
+                    background: "radial-gradient(60% 80% at 30% 0%, var(--heart-soft), transparent 70%)",
                   }}
-                  animate={{ backgroundPosition: ["200% 0%", "-100% 0%"] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+                  animate={{ opacity: [0.6, 1, 0.6] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
                 />
                 <div className="relative p-4 flex items-center gap-4">
                   <div className="relative shrink-0">
