@@ -183,6 +183,94 @@ export function HeartbeatIcon({ size = 16, className }: { size?: number; classNa
   );
 }
 
+export function DnaHelix({ className }: { className?: string }) {
+  // Two sine-wave strands with base-pair "rungs" — biomedical research signature
+  const pairs = Array.from({ length: 22 });
+  return (
+    <svg className={className} viewBox="0 0 800 400" preserveAspectRatio="none" aria-hidden>
+      <defs>
+        <linearGradient id="dna-strand" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="var(--heart)" stopOpacity="0" />
+          <stop offset="50%" stopColor="var(--heart)" stopOpacity="0.55" />
+          <stop offset="100%" stopColor="var(--heart)" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      {/* Strand A */}
+      <motion.path
+        d="M0 200 Q100 80 200 200 T400 200 T600 200 T800 200"
+        stroke="url(#dna-strand)"
+        strokeWidth="1.4"
+        fill="none"
+        animate={{ d: [
+          "M0 200 Q100 80 200 200 T400 200 T600 200 T800 200",
+          "M0 200 Q100 320 200 200 T400 200 T600 200 T800 200",
+          "M0 200 Q100 80 200 200 T400 200 T600 200 T800 200",
+        ] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+      {/* Strand B (phase-shifted) */}
+      <motion.path
+        d="M0 200 Q100 320 200 200 T400 200 T600 200 T800 200"
+        stroke="url(#dna-strand)"
+        strokeWidth="1.4"
+        fill="none"
+        animate={{ d: [
+          "M0 200 Q100 320 200 200 T400 200 T600 200 T800 200",
+          "M0 200 Q100 80 200 200 T400 200 T600 200 T800 200",
+          "M0 200 Q100 320 200 200 T400 200 T600 200 T800 200",
+        ] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      />
+      {/* Base-pair rungs that pulse along */}
+      {pairs.map((_, i) => {
+        const x = (i / (pairs.length - 1)) * 800;
+        const phase = i * 0.35;
+        return (
+          <motion.line
+            key={i}
+            x1={x}
+            x2={x}
+            stroke="var(--heart)"
+            strokeWidth="0.8"
+            strokeOpacity="0.4"
+            animate={{
+              y1: [200 + Math.sin(phase) * 80, 200 + Math.sin(phase + Math.PI) * 80, 200 + Math.sin(phase) * 80],
+              y2: [200 + Math.sin(phase + Math.PI) * 80, 200 + Math.sin(phase) * 80, 200 + Math.sin(phase + Math.PI) * 80],
+              opacity: [0.15, 0.5, 0.15],
+            }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          />
+        );
+      })}
+    </svg>
+  );
+}
+
+export function MoleculeOrbit({ className }: { className?: string }) {
+  // Atom-like rings with orbiting dots — molecular science feel
+  return (
+    <svg className={className} viewBox="0 0 200 200" aria-hidden>
+      <g transform="translate(100 100)">
+        {[0, 60, 120].map((rot, i) => (
+          <g key={i} transform={`rotate(${rot})`}>
+            <ellipse cx="0" cy="0" rx="80" ry="32" fill="none" stroke="var(--heart)" strokeOpacity="0.35" strokeWidth="1" />
+            <motion.circle
+              r="4"
+              fill="var(--heart)"
+              animate={{ rotate: 360 }}
+              transition={{ duration: 6 + i * 1.5, repeat: Infinity, ease: "linear" }}
+              style={{ transformOrigin: "0 0", transformBox: "fill-box" }}
+            >
+              <animateMotion dur={`${6 + i * 1.5}s`} repeatCount="indefinite" path="M -80 0 a 80 32 0 1 1 160 0 a 80 32 0 1 1 -160 0" />
+            </motion.circle>
+          </g>
+        ))}
+        <circle r="6" fill="var(--heart)" />
+      </g>
+    </svg>
+  );
+}
+
 export function ParticleField({ count = 30, className }: { count?: number; className?: string }) {
   // Deterministic positions to avoid hydration mismatch
   const dots = React.useMemo(() => {

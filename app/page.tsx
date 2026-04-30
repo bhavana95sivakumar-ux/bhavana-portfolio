@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { FadeIn, Stagger, StaggerItem, TextReveal, CountUp, Spotlight, Marquee, Magnetic, EKGLine, HeartbeatIcon, ParticleField, ConnectingLines } from "@/components/motion-primitives";
+import { FadeIn, Stagger, StaggerItem, TextReveal, CountUp, Spotlight, Marquee, Magnetic, EKGLine, HeartbeatIcon, DnaHelix } from "@/components/motion-primitives";
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -192,7 +192,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      <motion.div className="fixed top-0 left-0 right-0 h-[3px] aurora-bg z-[60] origin-left" style={{ scaleX: progress }} />
+      <motion.div className="fixed top-0 left-0 right-0 h-[2px] z-[60] origin-left" style={{ scaleX: progress, backgroundColor: "var(--heart)" }} />
       <Navbar />
 
       {/* Hero */}
@@ -227,9 +227,8 @@ export default function Home() {
             animate={{ x: [0, 50, -30, 0], y: [0, -50, 30, 0], scale: [1, 1.1, 0.95, 1] }}
             transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
           />
-          <ParticleField count={36} className="absolute inset-0 pointer-events-none" />
-          <ConnectingLines className="absolute inset-0 w-full h-full opacity-40 pointer-events-none" />
-          <div className="absolute inset-x-0 bottom-0 h-24 opacity-60">
+          <DnaHelix className="absolute inset-0 w-full h-full opacity-50 pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-24 opacity-70">
             <EKGLine className="h-full w-full" />
           </div>
         </div>
@@ -237,27 +236,59 @@ export default function Home() {
         <motion.div className="max-w-6xl mx-auto" style={{ opacity: heroOpacity }}>
           <div className="grid lg:grid-cols-[1fr_auto] gap-12 items-start">
             <div>
-              {/* Mobile-only avatar with pulsing ring */}
+              {/* Mobile-only premium profile card */}
               <motion.div
-                className="lg:hidden mb-6 flex items-center gap-4"
-                initial={{ opacity: 0, y: 12 }}
+                className="lg:hidden mb-8 relative rounded-2xl overflow-hidden border border-[var(--heart)]/30 bg-gradient-to-br from-[var(--heart-soft)] via-card to-card shadow-2xl shadow-[var(--heart-soft)]"
+                initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
               >
+                {/* Animated shimmer */}
                 <motion.div
-                  className="relative h-20 w-20 rounded-full overflow-hidden ring-2 ring-[var(--heart)]/40 shadow-xl shadow-[var(--heart-soft)]"
-                  whileTap={{ scale: 0.96 }}
-                  animate={{ boxShadow: ["0 0 0 0 var(--heart-soft)", "0 0 0 14px transparent"] }}
-                  transition={{ duration: 2.4, repeat: Infinity, ease: "easeOut" }}
-                >
-                  <Image src="/bhavana.jpg" alt="Dr. Bhavana Sivakumar" fill sizes="80px" className="object-cover" priority />
-                </motion.div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-[10px] font-mono tracking-wider text-[var(--heart)] flex items-center gap-1.5">
-                    <HeartbeatIcon size={10} /> LIVE · 72 BPM
+                  aria-hidden
+                  className="absolute inset-0 pointer-events-none"
+                  style={{
+                    background: "linear-gradient(120deg, transparent 30%, var(--heart-soft) 50%, transparent 70%)",
+                    backgroundSize: "300% 100%",
+                  }}
+                  animate={{ backgroundPosition: ["200% 0%", "-100% 0%"] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
+                />
+                <div className="relative p-4 flex items-center gap-4">
+                  <div className="relative shrink-0">
+                    <motion.div
+                      className="absolute inset-0 rounded-full"
+                      animate={{ boxShadow: ["0 0 0 0 var(--heart-soft)", "0 0 0 12px transparent"] }}
+                      transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
+                    />
+                    <div className="relative h-20 w-20 rounded-full overflow-hidden ring-2 ring-[var(--heart)]/60">
+                      <Image src="/bhavana.jpg" alt="Dr. Bhavana Sivakumar" fill sizes="80px" className="object-cover" priority />
+                    </div>
                   </div>
-                  <div className="text-xs text-muted-foreground mt-0.5">Postdoctoral Fellow · IU Indianapolis</div>
+                  <div className="flex-1 min-w-0">
+                    <div className="inline-flex items-center gap-1.5 text-[10px] font-mono tracking-wider px-2 py-1 rounded-full bg-background/70 border border-[var(--heart)]/40 text-[var(--heart)] mb-1.5">
+                      <HeartbeatIcon size={10} /> LIVE · 72 BPM
+                    </div>
+                    <div className="font-semibold text-sm leading-tight">Dr. Bhavana Sivakumar</div>
+                    <div className="text-[11px] text-muted-foreground mt-0.5">Postdoctoral Fellow</div>
+                    <div className="text-[10px] text-muted-foreground/80">Indiana University Indianapolis</div>
+                  </div>
                 </div>
+                <div className="relative grid grid-cols-3 border-t border-border/50 divide-x divide-border/50 bg-background/40">
+                  <div className="px-3 py-2.5 text-center">
+                    <div className="text-base font-bold tabular-nums text-[var(--heart)]">27<span className="text-xs">+</span></div>
+                    <div className="text-[9px] uppercase tracking-wider text-muted-foreground mt-0.5">Papers</div>
+                  </div>
+                  <div className="px-3 py-2.5 text-center">
+                    <div className="text-base font-bold tabular-nums text-[var(--heart)]">312</div>
+                    <div className="text-[9px] uppercase tracking-wider text-muted-foreground mt-0.5">Citations</div>
+                  </div>
+                  <div className="px-3 py-2.5 text-center">
+                    <div className="text-base font-bold tabular-nums text-[var(--heart)]">11</div>
+                    <div className="text-[9px] uppercase tracking-wider text-muted-foreground mt-0.5">h-index</div>
+                  </div>
+                </div>
+                <EKGLine className="absolute bottom-0 left-0 right-0 h-6 w-full opacity-30" />
               </motion.div>
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
                 <Badge variant="secondary" className="mb-6 gap-2 py-1.5 px-3 hidden md:inline-flex">
@@ -673,19 +704,7 @@ export default function Home() {
               <div className="text-xs font-mono text-[var(--heart)] mb-2 flex items-center gap-2">
                 <HeartbeatIcon size={12} /> 05 — HONORS
               </div>
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-2 inline-flex items-center gap-3">
-                Awards
-                <motion.span
-                  className="inline-flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full"
-                  style={{ background: "conic-gradient(from 0deg, var(--heart), var(--neon-violet), var(--neon-cyan), var(--neon-pink), var(--heart))" }}
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                >
-                  <span className="h-7 w-7 sm:h-9 sm:w-9 rounded-full bg-background flex items-center justify-center">
-                    <Award className="h-4 w-4 sm:h-5 sm:w-5" />
-                  </span>
-                </motion.span>
-              </h2>
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-2">Awards</h2>
               <p className="text-sm text-muted-foreground mb-6">A lifetime of recognition for excellence in research and academics.</p>
             </FadeIn>
             <Stagger className="space-y-3">
@@ -703,21 +722,16 @@ export default function Home() {
                           : "border-border/60 hover:border-[var(--heart)]/30"
                       }`}>
                         {isFeatured && (
-                          <>
-                            <motion.div
-                              aria-hidden
-                              className="absolute inset-0 pointer-events-none"
-                              style={{
-                                background: "linear-gradient(120deg, transparent, var(--heart-soft), transparent)",
-                                backgroundSize: "200% 100%",
-                              }}
-                              animate={{ backgroundPosition: ["200% 0%", "-100% 0%"] }}
-                              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                            />
-                            <div className="absolute top-0 right-0 px-2 py-0.5 text-[9px] font-mono tracking-wider rounded-bl-md bg-[var(--heart)] text-white">
-                              FEATURED
-                            </div>
-                          </>
+                          <motion.div
+                            aria-hidden
+                            className="absolute inset-0 pointer-events-none"
+                            style={{
+                              background: "linear-gradient(120deg, transparent, var(--heart-soft), transparent)",
+                              backgroundSize: "200% 100%",
+                            }}
+                            animate={{ backgroundPosition: ["200% 0%", "-100% 0%"] }}
+                            transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                          />
                         )}
                         <CardContent className="p-4 flex items-start gap-4 relative">
                           <div className={`h-10 w-10 rounded-lg flex items-center justify-center shrink-0 border transition-colors ${

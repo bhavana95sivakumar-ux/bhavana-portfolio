@@ -13,7 +13,6 @@ function Linkedin({ className }: { className?: string }) {
 }
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { ThemeToggle } from "@/components/theme-toggle";
 
 const links = [
   { href: "#about", label: "About" },
@@ -56,7 +55,6 @@ export function Navbar() {
           >
             <Linkedin className="h-4 w-4" />
           </a>
-          <ThemeToggle />
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger
               render={<Button variant="ghost" size="icon" className="md:hidden" aria-label="Open menu" />}
