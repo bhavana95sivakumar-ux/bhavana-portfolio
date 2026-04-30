@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { FadeIn, Stagger, StaggerItem, TextReveal, CountUp, Spotlight, Marquee, Magnetic, EKGLine, HeartbeatIcon } from "@/components/motion-primitives";
+import { FadeIn, Stagger, StaggerItem, TextReveal, CountUp, Spotlight, Marquee, Magnetic, EKGLine, HeartbeatIcon, ParticleField, ConnectingLines } from "@/components/motion-primitives";
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -227,6 +227,8 @@ export default function Home() {
             animate={{ x: [0, 50, -30, 0], y: [0, -50, 30, 0], scale: [1, 1.1, 0.95, 1] }}
             transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
           />
+          <ParticleField count={36} className="absolute inset-0 pointer-events-none" />
+          <ConnectingLines className="absolute inset-0 w-full h-full opacity-40 pointer-events-none" />
           <div className="absolute inset-x-0 bottom-0 h-24 opacity-60">
             <EKGLine className="h-full w-full" />
           </div>
@@ -266,11 +268,18 @@ export default function Home() {
                   Postdoctoral Research Fellow · Indiana University Indianapolis
                 </Badge>
               </motion.div>
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight leading-[1.05]">
+              <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight leading-[1.05] relative">
                 <TextReveal text="Dr. Bhavana" />
                 <br />
-                <span className="aurora-text">
+                <span className="relative inline-block">
                   <TextReveal text="Sivakumar, PhD" delay={0.2} />
+                  <motion.span
+                    aria-hidden
+                    className="absolute -bottom-1 left-0 h-[3px] aurora-bg rounded-full"
+                    initial={{ width: 0 }}
+                    animate={{ width: "100%" }}
+                    transition={{ duration: 1, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                  />
                 </span>
               </h1>
               <motion.p
@@ -650,36 +659,92 @@ export default function Home() {
       </section>
 
       {/* Honors & Workshops */}
-      <section id="honors" className="py-16 sm:py-24 px-5 sm:px-6 border-t">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12">
+      <section id="honors" className="py-16 sm:py-24 px-5 sm:px-6 border-t relative overflow-hidden">
+        {/* Subtle aurora glow behind awards */}
+        <motion.div
+          aria-hidden
+          className="absolute -top-40 left-1/4 h-[500px] w-[500px] rounded-full aurora-bg opacity-[0.08] blur-3xl pointer-events-none"
+          animate={{ x: [0, 40, 0], scale: [1, 1.1, 1] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 relative">
           <div>
             <FadeIn>
-              <div className="text-xs font-mono text-muted-foreground mb-2">05 — HONORS</div>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-8 inline-flex items-center gap-3">
-                Awards <Award className="h-7 w-7" />
+              <div className="text-xs font-mono text-[var(--heart)] mb-2 flex items-center gap-2">
+                <HeartbeatIcon size={12} /> 05 — HONORS
+              </div>
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-2 inline-flex items-center gap-3">
+                Awards
+                <motion.span
+                  className="inline-flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-full"
+                  style={{ background: "conic-gradient(from 0deg, var(--heart), var(--neon-violet), var(--neon-cyan), var(--neon-pink), var(--heart))" }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                >
+                  <span className="h-7 w-7 sm:h-9 sm:w-9 rounded-full bg-background flex items-center justify-center">
+                    <Award className="h-4 w-4 sm:h-5 sm:w-5" />
+                  </span>
+                </motion.span>
               </h2>
+              <p className="text-sm text-muted-foreground mb-6">A lifetime of recognition for excellence in research and academics.</p>
             </FadeIn>
             <Stagger className="space-y-3">
-              {honors.map((h) => (
-                <StaggerItem key={h.title}>
-                  <motion.div whileHover={{ x: 4 }} transition={{ type: "spring", stiffness: 400, damping: 25 }}>
-                    <Card className="border-border/60 hover:border-foreground/30 transition">
-                      <CardContent className="p-4 flex items-start gap-4">
-                        <div className="h-10 w-10 rounded-lg bg-foreground/5 flex items-center justify-center shrink-0 border border-border">
-                          <Award className="h-4 w-4" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="flex items-start justify-between gap-3 flex-wrap">
-                            <h3 className="font-semibold text-sm">{h.title}</h3>
-                            <Badge variant="outline" className="font-mono text-[10px] shrink-0">{h.year}</Badge>
+              {honors.map((h, i) => {
+                const isFeatured = i === 0;
+                return (
+                  <StaggerItem key={h.title}>
+                    <motion.div
+                      whileHover={{ x: 4, scale: 1.01 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                    >
+                      <Card className={`relative overflow-hidden transition group ${
+                        isFeatured
+                          ? "border-[var(--heart)]/40 bg-gradient-to-br from-[var(--heart-soft)] via-background to-background shadow-lg shadow-[var(--heart-soft)]"
+                          : "border-border/60 hover:border-[var(--heart)]/30"
+                      }`}>
+                        {isFeatured && (
+                          <>
+                            <motion.div
+                              aria-hidden
+                              className="absolute inset-0 pointer-events-none"
+                              style={{
+                                background: "linear-gradient(120deg, transparent, var(--heart-soft), transparent)",
+                                backgroundSize: "200% 100%",
+                              }}
+                              animate={{ backgroundPosition: ["200% 0%", "-100% 0%"] }}
+                              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                            />
+                            <div className="absolute top-0 right-0 px-2 py-0.5 text-[9px] font-mono tracking-wider rounded-bl-md bg-[var(--heart)] text-white">
+                              FEATURED
+                            </div>
+                          </>
+                        )}
+                        <CardContent className="p-4 flex items-start gap-4 relative">
+                          <div className={`h-10 w-10 rounded-lg flex items-center justify-center shrink-0 border transition-colors ${
+                            isFeatured
+                              ? "bg-[var(--heart)] text-white border-[var(--heart)] shadow-md shadow-[var(--heart-soft)]"
+                              : "bg-foreground/5 border-border group-hover:bg-[var(--heart)]/10 group-hover:border-[var(--heart)]/30"
+                          }`}>
+                            <Award className="h-4 w-4" />
                           </div>
-                          <p className="text-xs text-muted-foreground mt-1">{h.org}</p>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                </StaggerItem>
-              ))}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between gap-3 flex-wrap">
+                              <h3 className={`font-semibold text-sm leading-snug ${isFeatured ? "text-[var(--heart)]" : ""}`}>{h.title}</h3>
+                              <Badge
+                                variant="outline"
+                                className={`font-mono text-[10px] shrink-0 ${isFeatured ? "border-[var(--heart)]/40 text-[var(--heart)]" : ""}`}
+                              >
+                                {h.year}
+                              </Badge>
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-1">{h.org}</p>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  </StaggerItem>
+                );
+              })}
             </Stagger>
           </div>
 

@@ -183,6 +183,86 @@ export function HeartbeatIcon({ size = 16, className }: { size?: number; classNa
   );
 }
 
+export function ParticleField({ count = 30, className }: { count?: number; className?: string }) {
+  // Deterministic positions to avoid hydration mismatch
+  const dots = React.useMemo(() => {
+    return Array.from({ length: count }).map((_, i) => {
+      const seed = i * 9301 + 49297;
+      const r1 = ((seed % 233280) / 233280);
+      const r2 = (((seed * 7) % 233280) / 233280);
+      const r3 = (((seed * 13) % 233280) / 233280);
+      return {
+        id: i,
+        x: r1 * 100,
+        y: r2 * 100,
+        size: 1 + r3 * 2.5,
+        duration: 6 + r1 * 10,
+        delay: r2 * 4,
+      };
+    });
+  }, [count]);
+  return (
+    <div className={className} aria-hidden>
+      {dots.map((d) => (
+        <motion.span
+          key={d.id}
+          className="absolute rounded-full bg-[var(--heart)]"
+          style={{ left: `${d.x}%`, top: `${d.y}%`, width: d.size, height: d.size, opacity: 0.5 }}
+          animate={{ y: [0, -30, 0], opacity: [0.2, 0.8, 0.2] }}
+          transition={{ duration: d.duration, delay: d.delay, repeat: Infinity, ease: "easeInOut" }}
+        />
+      ))}
+    </div>
+  );
+}
+
+export function ConnectingLines({ className }: { className?: string }) {
+  // SVG with animated connecting lines — gives "research network" feel
+  return (
+    <svg className={className} viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice" aria-hidden>
+      <defs>
+        <linearGradient id="line-grad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="var(--heart)" stopOpacity="0" />
+          <stop offset="50%" stopColor="var(--heart)" stopOpacity="0.5" />
+          <stop offset="100%" stopColor="var(--neon-cyan)" stopOpacity="0" />
+        </linearGradient>
+      </defs>
+      {[
+        "M50,80 Q200,20 400,100 T750,80",
+        "M0,200 Q200,150 380,220 T800,180",
+        "M30,320 Q220,260 420,330 T780,300",
+      ].map((d, i) => (
+        <motion.path
+          key={i}
+          d={d}
+          stroke="url(#line-grad)"
+          strokeWidth="1"
+          fill="none"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ pathLength: 1, opacity: [0, 0.8, 0] }}
+          transition={{ duration: 6, delay: i * 1.5, repeat: Infinity, ease: "easeInOut" }}
+        />
+      ))}
+      {/* Pulse nodes */}
+      {[
+        { x: 120, y: 90 }, { x: 380, y: 60 }, { x: 600, y: 110 },
+        { x: 200, y: 200 }, { x: 500, y: 230 }, { x: 700, y: 180 },
+        { x: 150, y: 320 }, { x: 450, y: 340 }, { x: 680, y: 310 },
+      ].map((p, i) => (
+        <motion.circle
+          key={i}
+          cx={p.x}
+          cy={p.y}
+          r="3"
+          fill="var(--heart)"
+          animate={{ scale: [1, 2.4, 1], opacity: [0.3, 1, 0.3] }}
+          transition={{ duration: 3, delay: i * 0.4, repeat: Infinity, ease: "easeInOut" }}
+        />
+      ))}
+    </svg>
+  );
+}
+
 export function Magnetic({ children, strength = 0.25 }: { children: React.ReactNode; strength?: number }) {
   const ref = React.useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
