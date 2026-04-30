@@ -192,7 +192,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      <motion.div className="fixed top-0 left-0 right-0 h-[2px] bg-foreground z-[60] origin-left" style={{ scaleX: progress }} />
+      <motion.div className="fixed top-0 left-0 right-0 h-[3px] aurora-bg z-[60] origin-left" style={{ scaleX: progress }} />
       <Navbar />
 
       {/* Hero */}
@@ -217,9 +217,15 @@ export default function Home() {
           />
           <motion.div
             className="absolute top-20 right-0 h-[500px] w-[500px] rounded-full blur-3xl"
-            style={{ background: "radial-gradient(circle, var(--heart-soft), transparent 70%)" }}
+            style={{ background: "radial-gradient(circle, var(--neon-violet), transparent 70%)", opacity: 0.18 }}
             animate={{ x: [0, -80, 0], y: [0, 60, 0], scale: [1, 1.2, 1] }}
             transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            className="absolute bottom-0 left-1/3 h-[420px] w-[420px] rounded-full blur-3xl"
+            style={{ background: "radial-gradient(circle, var(--neon-cyan), transparent 70%)", opacity: 0.14 }}
+            animate={{ x: [0, 50, -30, 0], y: [0, -50, 30, 0], scale: [1, 1.1, 0.95, 1] }}
+            transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
           />
           <div className="absolute inset-x-0 bottom-0 h-24 opacity-60">
             <EKGLine className="h-full w-full" />
@@ -263,7 +269,7 @@ export default function Home() {
               <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight leading-[1.05]">
                 <TextReveal text="Dr. Bhavana" />
                 <br />
-                <span className="bg-gradient-to-br from-foreground via-foreground to-foreground/50 bg-clip-text text-transparent">
+                <span className="aurora-text">
                   <TextReveal text="Sivakumar, PhD" delay={0.2} />
                 </span>
               </h1>
@@ -609,17 +615,17 @@ export default function Home() {
             </Magnetic>
           </FadeIn>
 
-          {/* Mini stats strip (replaces chart) */}
+          {/* Mini stats strip — Google Scholar source of truth */}
           <FadeIn delay={0.12} className="mb-10">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-px rounded-xl overflow-hidden border border-border/60 bg-border">
               {[
-                { v: publications.length, l: "Total papers" },
-                { v: publications.reduce((s, p) => s + (p.cites ?? 0), 0), l: "Total citations" },
-                { v: years.length, l: "Active years" },
-                { v: Math.max(...publications.map((p) => p.cites ?? 0)), l: "Top paper cites" },
+                { v: 27, suffix: "+", l: "Peer-reviewed papers" },
+                { v: 312, suffix: "", l: "Total citations" },
+                { v: 11, suffix: "", l: "h-index" },
+                { v: 12, suffix: "", l: "i10-index" },
               ].map((s) => (
                 <div key={s.l} className="bg-background px-4 py-4">
-                  <div className="text-2xl font-bold tabular-nums"><CountUp to={s.v} /></div>
+                  <div className="text-2xl font-bold tabular-nums"><CountUp to={s.v} suffix={s.suffix} /></div>
                   <div className="text-xs text-muted-foreground mt-0.5">{s.l}</div>
                 </div>
               ))}
@@ -723,9 +729,9 @@ export default function Home() {
       {/* Contact */}
       <section id="contact" className="py-16 sm:py-24 px-5 sm:px-6 border-t relative overflow-hidden">
         <motion.div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[400px] w-[400px] rounded-full bg-gradient-to-r from-blue-400/10 via-purple-400/10 to-pink-400/10 blur-3xl -z-10"
-          animate={{ rotate: 360 }}
-          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-[520px] w-[520px] rounded-full aurora-bg opacity-25 blur-3xl -z-10"
+          animate={{ rotate: 360, scale: [1, 1.1, 1] }}
+          transition={{ rotate: { duration: 40, repeat: Infinity, ease: "linear" }, scale: { duration: 8, repeat: Infinity, ease: "easeInOut" } }}
         />
         <div className="max-w-6xl mx-auto">
           <FadeIn>
