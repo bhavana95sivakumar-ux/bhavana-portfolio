@@ -227,8 +227,7 @@ export default function Home() {
             animate={{ x: [0, 50, -30, 0], y: [0, -50, 30, 0], scale: [1, 1.1, 0.95, 1] }}
             transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
           />
-          <DnaHelix className="absolute inset-0 w-full h-full opacity-50 pointer-events-none" />
-          <div className="absolute inset-x-0 bottom-0 h-24 opacity-70">
+          <div className="absolute inset-x-0 bottom-0 h-24 opacity-60">
             <EKGLine className="h-full w-full" />
           </div>
         </div>
@@ -299,19 +298,10 @@ export default function Home() {
                   Postdoctoral Research Fellow · Indiana University Indianapolis
                 </Badge>
               </motion.div>
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight leading-[1.05] relative">
+              <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight leading-[1.05]">
                 <TextReveal text="Dr. Bhavana" />
                 <br />
-                <span className="relative inline-block">
-                  <TextReveal text="Sivakumar, PhD" delay={0.2} />
-                  <motion.span
-                    aria-hidden
-                    className="absolute -bottom-1 left-0 h-[3px] aurora-bg rounded-full"
-                    initial={{ width: 0 }}
-                    animate={{ width: "100%" }}
-                    transition={{ duration: 1, delay: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                  />
-                </span>
+                <TextReveal text="Sivakumar, PhD" delay={0.2} />
               </h1>
               <motion.p
                 className="mt-5 sm:mt-6 text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed"
