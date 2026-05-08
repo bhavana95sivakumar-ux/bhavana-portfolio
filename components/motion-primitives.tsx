@@ -137,6 +137,53 @@ export function Spotlight() {
   );
 }
 
+export function Tilt3D({
+  children,
+  className,
+  max = 10,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  max?: number;
+}) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const rx = useSpring(useTransform(y, [-0.5, 0.5], [max, -max]), { stiffness: 200, damping: 20 });
+  const ry = useSpring(useTransform(x, [-0.5, 0.5], [-max, max]), { stiffness: 200, damping: 20 });
+  const gx = useTransform(x, [-0.5, 0.5], ["0%", "100%"]);
+  const gy = useTransform(y, [-0.5, 0.5], ["0%", "100%"]);
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={(e) => {
+        const r = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+        x.set((e.clientX - r.left) / r.width - 0.5);
+        y.set((e.clientY - r.top) / r.height - 0.5);
+      }}
+      onMouseLeave={() => {
+        x.set(0);
+        y.set(0);
+      }}
+      style={{ rotateX: rx, rotateY: ry, transformStyle: "preserve-3d", perspective: 1000 }}
+      className={`relative ${className ?? ""}`}
+    >
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 rounded-[inherit] z-10 mix-blend-soft-light"
+        style={{
+          background: useTransform(
+            [gx, gy],
+            ([gxv, gyv]) =>
+              `radial-gradient(220px circle at ${gxv} ${gyv}, rgba(255,255,255,0.18), transparent 60%)`
+          ),
+        }}
+      />
+      {children}
+    </motion.div>
+  );
+}
+
 export function Marquee({ children, duration = 30 }: { children: React.ReactNode; duration?: number }) {
   return (
     <div className="relative overflow-hidden py-2" style={{ maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)" }}>

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { FadeIn, Stagger, StaggerItem, TextReveal, CountUp, Spotlight, Marquee, Magnetic, EKGLine, HeartbeatIcon, DnaHelix } from "@/components/motion-primitives";
+import { FadeIn, Stagger, StaggerItem, TextReveal, CountUp, Spotlight, Marquee, Magnetic, EKGLine, HeartbeatIcon, DnaHelix, Tilt3D } from "@/components/motion-primitives";
 import { FALLBACK_STATS, type Stats } from "@/lib/stats-config";
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import { Badge } from "@/components/ui/badge";
@@ -205,7 +205,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen pb-24 md:pb-0">
       <motion.div className="fixed top-0 left-0 right-0 h-[2px] z-[60] origin-left" style={{ scaleX: progress, backgroundColor: "var(--heart)" }} />
       <Navbar />
 
@@ -281,7 +281,7 @@ export default function Home() {
                     <div className="inline-flex items-center gap-1.5 text-[10px] font-mono tracking-wider px-2 py-1 rounded-full bg-background/70 border border-[var(--heart)]/40 text-[var(--heart)] mb-1.5">
                       <HeartbeatIcon size={10} /> LIVE · 72 BPM
                     </div>
-                    <div className="font-semibold text-sm leading-tight">Bhavana Sivakumar</div>
+                    <div className="font-semibold text-sm leading-tight">Dr. Bhavana Sivakumar</div>
                     <div className="text-[11px] text-muted-foreground mt-0.5">Postdoctoral Fellow</div>
                     <div className="text-[10px] text-muted-foreground/80">Indiana University Indianapolis</div>
                   </div>
@@ -311,7 +311,7 @@ export default function Home() {
                   Postdoctoral Research Fellow · Indiana University Indianapolis
                 </Badge>
               </motion.div>
-              <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight leading-[1.05]">
+              <h1 className="text-[clamp(2.5rem,10vw,4.5rem)] md:text-7xl font-bold tracking-tight leading-[1.02] bg-gradient-to-br from-foreground via-foreground to-foreground/60 bg-clip-text text-transparent">
                 <TextReveal text="Bhavana" />
                 <br />
                 <TextReveal text="Sivakumar, PhD" delay={0.2} />
@@ -371,8 +371,8 @@ export default function Home() {
               initial={{ opacity: 0, x: 40, rotateY: -8 }}
               animate={{ opacity: 1, x: 0, rotateY: 0 }}
               transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              whileHover={{ y: -4 }}
             >
+              <Tilt3D className="w-80 rounded-xl">
               <Card className="w-80 border-border/60 shadow-2xl shadow-[var(--heart-soft)] overflow-hidden">
                 <div className="relative aspect-[4/5] overflow-hidden bg-gradient-to-br from-[var(--heart-soft)] via-foreground/5 to-transparent">
                   <Image
@@ -391,7 +391,7 @@ export default function Home() {
                 </div>
                 <CardContent className="p-6">
                   <div className="space-y-1">
-                    <div className="font-semibold text-lg">Bhavana Sivakumar</div>
+                    <div className="font-semibold text-lg">Dr. Bhavana Sivakumar</div>
                     <div className="text-sm text-muted-foreground">Postdoctoral Research Fellow</div>
                     <div className="text-xs text-muted-foreground">Indiana University Indianapolis</div>
                   </div>
@@ -401,9 +401,11 @@ export default function Home() {
                     <div className="flex items-center gap-2 text-muted-foreground"><BookOpen className="h-3.5 w-3.5" /> {stats.publications} publications</div>
                     <div className="flex items-center gap-2 text-muted-foreground"><Quote className="h-3.5 w-3.5" /> {stats.citations} citations · h-index {stats.hIndex}</div>
                     <div className="flex items-center gap-2 text-muted-foreground"><Award className="h-3.5 w-3.5" /> Best PhD Thesis, SASTRA 2024</div>
+                    <div className="flex items-center gap-2 text-muted-foreground"><Award className="h-3.5 w-3.5" /> ICMR Senior Research Fellowship</div>
                   </div>
                 </CardContent>
               </Card>
+              </Tilt3D>
             </motion.div>
           </div>
 
@@ -870,6 +872,35 @@ export default function Home() {
           <div className="font-mono text-xs">Built with Next.js · shadcn/ui · Motion</div>
         </div>
       </footer>
+
+      {/* Mobile floating quick-actions */}
+      <motion.div
+        className="md:hidden fixed bottom-4 inset-x-4 z-50 flex items-center justify-between gap-2 rounded-2xl border border-border/60 bg-background/80 backdrop-blur-xl shadow-2xl shadow-[var(--heart-soft)] px-2 py-2"
+        initial={{ y: 80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <a
+          href="#contact"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-medium py-2.5 rounded-xl bg-foreground text-background"
+        >
+          <Mail className="h-3.5 w-3.5" /> Contact
+        </a>
+        <a
+          href="#publications"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-medium py-2.5 rounded-xl border border-border/60"
+        >
+          <BookOpen className="h-3.5 w-3.5" /> Papers
+        </a>
+        <a
+          href="https://www.linkedin.com/in/bhavana-sivakumar"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex-1 inline-flex items-center justify-center gap-1.5 text-xs font-medium py-2.5 rounded-xl border border-border/60"
+        >
+          <Linkedin className="h-3.5 w-3.5" /> LinkedIn
+        </a>
+      </motion.div>
     </div>
   );
 }
