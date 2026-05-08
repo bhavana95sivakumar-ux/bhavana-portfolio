@@ -278,7 +278,7 @@ export default function Home() {
                         transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
                       >
                         <Image
-                          src="/bhavana.jpg"
+                          src="/bhavana-v2.jpg"
                           alt="Dr. Bhavana Sivakumar"
                           fill
                           className="object-cover object-[center_top] grayscale-[0.2] contrast-110"
@@ -442,7 +442,7 @@ export default function Home() {
               <Card className="w-80 border-border/60 shadow-2xl shadow-[var(--heart-soft)] overflow-hidden">
                 <div className="relative aspect-[4/5] overflow-hidden bg-gradient-to-br from-[var(--heart-soft)] via-foreground/5 to-transparent">
                   <Image
-                    src="/bhavana.jpg"
+                    src="/bhavana-v2.jpg"
                     alt="Dr. Bhavana Sivakumar"
                     fill
                     className="object-cover object-center"
