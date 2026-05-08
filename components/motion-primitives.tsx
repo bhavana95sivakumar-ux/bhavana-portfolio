@@ -152,7 +152,9 @@ export function Parallax({
   const ys = useSpring(y, { stiffness: 90, damping: 24, mass: 0.4 });
   return (
     <div ref={ref} className={className}>
-      <motion.div style={{ y: ys }}>{children}</motion.div>
+      <motion.div style={{ y: ys }} className="h-full w-full">
+        {children}
+      </motion.div>
     </div>
   );
 }
