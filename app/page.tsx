@@ -249,58 +249,147 @@ export default function Home() {
         <motion.div className="max-w-6xl mx-auto" style={{ opacity: heroOpacity }}>
           <div className="grid lg:grid-cols-[1fr_auto] gap-12 items-start">
             <div>
-              {/* Mobile-only premium profile card */}
+              {/* Mobile-only premium profile card — hero showcase */}
               <motion.div
-                className="lg:hidden mb-8 relative rounded-2xl overflow-hidden border border-[var(--heart)]/30 bg-gradient-to-br from-[var(--heart-soft)] via-card to-card shadow-2xl shadow-[var(--heart-soft)]"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                className="lg:hidden mb-8 relative rounded-3xl overflow-hidden"
+                initial={{ opacity: 0, y: 24, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
               >
-                {/* Smooth breathing glow */}
+                {/* Animated gradient border */}
                 <motion.div
                   aria-hidden
-                  className="absolute inset-0 pointer-events-none"
+                  className="absolute -inset-px rounded-3xl pointer-events-none opacity-80"
                   style={{
-                    background: "radial-gradient(60% 80% at 30% 0%, var(--heart-soft), transparent 70%)",
+                    background:
+                      "conic-gradient(from 0deg, var(--heart) 0%, transparent 25%, var(--heart-soft) 50%, transparent 75%, var(--heart) 100%)",
                   }}
-                  animate={{ opacity: [0.6, 1, 0.6] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                 />
-                <div className="relative p-4 flex items-center gap-4">
-                  <div className="relative shrink-0">
+                <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-card via-card to-[var(--heart-soft)]/40 backdrop-blur-xl">
+                  {/* Photo banner with parallax + duotone */}
+                  <div className="relative h-52 overflow-hidden">
                     <motion.div
-                      className="absolute inset-0 rounded-full"
-                      animate={{ boxShadow: ["0 0 0 0 var(--heart-soft)", "0 0 0 12px transparent"] }}
-                      transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
+                      className="absolute inset-0"
+                      initial={{ scale: 1.15 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      <Image
+                        src="/bhavana.jpg"
+                        alt="Dr. Bhavana Sivakumar"
+                        fill
+                        className="object-cover object-center grayscale-[0.2] contrast-110"
+                        sizes="100vw"
+                        priority
+                      />
+                    </motion.div>
+                    {/* Duotone tint */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-[var(--heart)]/25 via-transparent to-background/30 mix-blend-overlay" />
+                    {/* Bottom fade */}
+                    <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-card via-card/85 to-transparent" />
+                    {/* Top grid overlay */}
+                    <div
+                      className="absolute inset-0 opacity-20"
+                      style={{
+                        backgroundImage:
+                          "linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px)",
+                        backgroundSize: "24px 24px",
+                      }}
                     />
-                    <div className="relative h-20 w-20 rounded-full overflow-hidden ring-2 ring-[var(--heart)]/60">
-                      <Image src="/bhavana.jpg" alt="Dr. Bhavana Sivakumar" fill sizes="80px" className="object-cover" priority />
-                    </div>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="inline-flex items-center gap-1.5 text-[10px] font-mono tracking-wider px-2 py-1 rounded-full bg-background/70 border border-[var(--heart)]/40 text-[var(--heart)] mb-1.5">
+                    {/* Floating LIVE badge */}
+                    <motion.div
+                      className="absolute top-3 right-3 inline-flex items-center gap-1.5 text-[10px] font-mono tracking-wider px-2.5 py-1.5 rounded-full bg-background/80 backdrop-blur-md border border-[var(--heart)]/50 text-[var(--heart)] shadow-lg shadow-[var(--heart-soft)]"
+                      animate={{ y: [0, -3, 0] }}
+                      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    >
                       <HeartbeatIcon size={10} /> LIVE · 72 BPM
+                    </motion.div>
+                    {/* Status chip */}
+                    <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 text-[10px] font-mono tracking-wider px-2.5 py-1.5 rounded-full bg-background/70 backdrop-blur-md border border-emerald-500/40 text-emerald-400">
+                      <span className="relative flex h-1.5 w-1.5">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
+                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
+                      </span>
+                      Available
                     </div>
-                    <div className="font-semibold text-sm leading-tight">Dr. Bhavana Sivakumar</div>
-                    <div className="text-[11px] text-muted-foreground mt-0.5">Postdoctoral Fellow</div>
-                    <div className="text-[10px] text-muted-foreground/80">Indiana University Indianapolis</div>
+                    <EKGLine className="absolute bottom-0 left-0 right-0 h-8 w-full opacity-90" />
+                  </div>
+
+                  {/* Identity block */}
+                  <div className="relative px-5 pt-2 pb-5">
+                    <motion.h2
+                      className="text-2xl font-bold tracking-tight leading-tight bg-gradient-to-br from-foreground via-foreground to-foreground/70 bg-clip-text text-transparent"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.4, duration: 0.6 }}
+                    >
+                      Dr. Bhavana Sivakumar
+                    </motion.h2>
+                    <motion.div
+                      className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ delay: 0.55 }}
+                    >
+                      <Microscope className="h-3 w-3 text-[var(--heart)]" />
+                      <span>Postdoctoral Fellow</span>
+                      <span className="text-muted-foreground/40">·</span>
+                      <span className="truncate">IU Indianapolis</span>
+                    </motion.div>
+
+                    {/* Expertise chips */}
+                    <motion.div
+                      className="mt-3 flex flex-wrap gap-1.5"
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.7, duration: 0.5 }}
+                    >
+                      {["Cardiovascular", "Mitochondrial", "PM2.5"].map((t) => (
+                        <span
+                          key={t}
+                          className="text-[10px] font-medium px-2 py-1 rounded-full border border-border/60 bg-background/60 backdrop-blur text-muted-foreground"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </motion.div>
+
+                    {/* Stat tiles */}
+                    <motion.div
+                      className="mt-4 grid grid-cols-3 gap-2"
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.85, duration: 0.6 }}
+                    >
+                      {[
+                        { v: stats.publications, l: "Papers", icon: BookOpen },
+                        { v: stats.citations, l: "Citations", icon: Quote },
+                        { v: stats.hIndex, l: "h-index", icon: Sparkles },
+                      ].map((s) => (
+                        <motion.div
+                          key={s.l}
+                          whileTap={{ scale: 0.96 }}
+                          className="relative rounded-xl overflow-hidden border border-border/60 bg-background/60 backdrop-blur p-2.5 text-center group"
+                        >
+                          <motion.div
+                            aria-hidden
+                            className="absolute inset-0 opacity-0 group-active:opacity-100 transition-opacity"
+                            style={{ background: "radial-gradient(70% 100% at 50% 0%, var(--heart-soft), transparent 70%)" }}
+                          />
+                          <s.icon className="h-3 w-3 mx-auto mb-1 text-[var(--heart)]/70" />
+                          <div className="text-lg font-bold tabular-nums bg-gradient-to-br from-[var(--heart)] to-[var(--heart)]/60 bg-clip-text text-transparent">
+                            <CountUp to={s.v} />
+                          </div>
+                          <div className="text-[8px] uppercase tracking-[0.12em] text-muted-foreground/70 mt-0.5 font-medium">
+                            {s.l}
+                          </div>
+                        </motion.div>
+                      ))}
+                    </motion.div>
                   </div>
                 </div>
-                <div className="relative grid grid-cols-3 border-t border-border/50 divide-x divide-border/50 bg-background/40">
-                  <div className="px-3 py-2.5 text-center">
-                    <div className="text-base font-bold tabular-nums text-[var(--heart)]">{stats.publications}</div>
-                    <div className="text-[9px] uppercase tracking-wider text-muted-foreground mt-0.5">Papers</div>
-                  </div>
-                  <div className="px-3 py-2.5 text-center">
-                    <div className="text-base font-bold tabular-nums text-[var(--heart)]">{stats.citations}</div>
-                    <div className="text-[9px] uppercase tracking-wider text-muted-foreground mt-0.5">Citations</div>
-                  </div>
-                  <div className="px-3 py-2.5 text-center">
-                    <div className="text-base font-bold tabular-nums text-[var(--heart)]">{stats.hIndex}</div>
-                    <div className="text-[9px] uppercase tracking-wider text-muted-foreground mt-0.5">h-index</div>
-                  </div>
-                </div>
-                <EKGLine className="absolute bottom-0 left-0 right-0 h-6 w-full opacity-30" />
               </motion.div>
               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
                 <Badge variant="secondary" className="mb-6 gap-2 py-1.5 px-3 hidden md:inline-flex">
