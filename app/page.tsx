@@ -268,29 +268,29 @@ export default function Home() {
                   transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                 />
                 <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-card via-card to-[var(--heart-soft)]/40 backdrop-blur-xl">
-                  {/* Photo banner with parallax + duotone */}
-                  <div className="relative h-72 overflow-hidden">
+                  {/* Photo banner with parallax */}
+                  <div className="relative h-96 overflow-hidden">
                     <Parallax offset={30} className="absolute inset-0">
                       <motion.div
                         className="absolute inset-0"
-                        initial={{ scale: 1.15 }}
-                        animate={{ scale: 1.05 }}
+                        initial={{ scale: 1.12 }}
+                        animate={{ scale: 1.02 }}
                         transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
                       >
                         <Image
                           src="/bhavana-v2.jpg"
                           alt="Dr. Bhavana Sivakumar"
                           fill
-                          className="object-cover object-[center_top] grayscale-[0.2] contrast-110"
+                          className="object-cover object-[center_20%]"
                           sizes="100vw"
                           priority
                         />
                       </motion.div>
                     </Parallax>
-                    {/* Duotone tint */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-[var(--heart)]/25 via-transparent to-background/30 mix-blend-overlay" />
-                    {/* Bottom fade */}
-                    <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-card via-card/85 to-transparent" />
+                    {/* Subtle vignette only */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-background/20" />
+                    {/* Bottom fade — only covers lower 1/3 so face stays clear */}
+                    <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-card via-card/70 to-transparent" />
                     {/* Top grid overlay */}
                     <div
                       className="absolute inset-0 opacity-20"
