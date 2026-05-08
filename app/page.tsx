@@ -333,23 +333,6 @@ export default function Home() {
                       <span className="truncate">IU Indianapolis</span>
                     </motion.div>
 
-                    {/* Expertise chips */}
-                    <motion.div
-                      className="mt-3 flex flex-wrap gap-1.5"
-                      initial={{ opacity: 0, y: 6 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.7, duration: 0.5 }}
-                    >
-                      {["Cardiovascular", "Mitochondrial", "PM2.5"].map((t) => (
-                        <span
-                          key={t}
-                          className="text-[10px] font-medium px-2 py-1 rounded-full border border-border/60 bg-background/60 backdrop-blur text-muted-foreground"
-                        >
-                          {t}
-                        </span>
-                      ))}
-                    </motion.div>
-
                     {/* Stat tiles */}
                     <motion.div
                       className="mt-4 grid grid-cols-3 gap-2"
