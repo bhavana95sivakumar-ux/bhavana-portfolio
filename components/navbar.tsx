@@ -25,6 +25,23 @@ const links = [
 
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
+  const [active, setActive] = React.useState<string>("");
+  React.useEffect(() => {
+    const ids = links.map((l) => l.href.slice(1));
+    const els = ids.map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[];
+    if (!els.length) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActive("#" + visible.target.id);
+      },
+      { rootMargin: "-40% 0px -50% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] }
+    );
+    els.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
   return (
     <header className="fixed top-0 inset-x-0 z-50 border-b border-border/40 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
       <div className="max-w-6xl mx-auto h-14 px-6 flex items-center justify-between">
@@ -34,16 +51,24 @@ export function Navbar() {
           </span>
           <span className="hidden sm:inline">Dr. Bhavana Sivakumar</span>
         </Link>
-        <nav className="hidden md:flex items-center gap-1 text-sm">
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="px-3 py-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition"
-            >
-              {l.label}
-            </Link>
-          ))}
+        <nav className="hidden md:flex items-center gap-1 text-sm relative">
+          {links.map((l) => {
+            const isActive = active === l.href;
+            return (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={`relative px-3 py-2 rounded-md transition ${
+                  isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {l.label}
+                {isActive && (
+                  <span className="absolute left-2 right-2 -bottom-px h-px bg-[var(--heart)]" />
+                )}
+              </Link>
+            );
+          })}
         </nav>
         <div className="flex items-center gap-1">
           <a

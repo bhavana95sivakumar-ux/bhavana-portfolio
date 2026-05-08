@@ -12,6 +12,8 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 import { Navbar } from "@/components/navbar";
+import { SectionRail } from "@/components/section-rail";
+import { CursorGlow } from "@/components/cursor-glow";
 import {
   ArrowRight,
   Mail,
@@ -206,8 +208,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen pb-24 md:pb-0">
+      <CursorGlow />
       <motion.div className="fixed top-0 left-0 right-0 h-[2px] z-[60] origin-left" style={{ scaleX: progress, backgroundColor: "var(--heart)" }} />
       <Navbar />
+      <SectionRail />
 
       {/* Hero */}
       <section id="top" className="relative pt-24 sm:pt-32 pb-16 sm:pb-24 px-5 sm:px-6 overflow-hidden">
