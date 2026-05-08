@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { FadeIn, Stagger, StaggerItem, TextReveal, CountUp, Spotlight, Marquee, Magnetic, EKGLine, HeartbeatIcon, DnaHelix, Tilt3D } from "@/components/motion-primitives";
+import { FadeIn, Stagger, StaggerItem, TextReveal, CountUp, Spotlight, Marquee, Magnetic, EKGLine, HeartbeatIcon, DnaHelix, Tilt3D, Parallax, ScrollReveal } from "@/components/motion-primitives";
 import { FALLBACK_STATS, type Stats } from "@/lib/stats-config";
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import { Badge } from "@/components/ui/badge";
@@ -269,22 +269,24 @@ export default function Home() {
                 />
                 <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-card via-card to-[var(--heart-soft)]/40 backdrop-blur-xl">
                   {/* Photo banner with parallax + duotone */}
-                  <div className="relative h-52 overflow-hidden">
-                    <motion.div
-                      className="absolute inset-0"
-                      initial={{ scale: 1.15 }}
-                      animate={{ scale: 1 }}
-                      transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                      <Image
-                        src="/bhavana.jpg"
-                        alt="Dr. Bhavana Sivakumar"
-                        fill
-                        className="object-cover object-center grayscale-[0.2] contrast-110"
-                        sizes="100vw"
-                        priority
-                      />
-                    </motion.div>
+                  <div className="relative h-72 overflow-hidden">
+                    <Parallax offset={30} className="absolute inset-0">
+                      <motion.div
+                        className="absolute inset-0"
+                        initial={{ scale: 1.15 }}
+                        animate={{ scale: 1.05 }}
+                        transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                      >
+                        <Image
+                          src="/bhavana.jpg"
+                          alt="Dr. Bhavana Sivakumar"
+                          fill
+                          className="object-cover object-[center_top] grayscale-[0.2] contrast-110"
+                          sizes="100vw"
+                          priority
+                        />
+                      </motion.div>
+                    </Parallax>
                     {/* Duotone tint */}
                     <div className="absolute inset-0 bg-gradient-to-br from-[var(--heart)]/25 via-transparent to-background/30 mix-blend-overlay" />
                     {/* Bottom fade */}
@@ -306,14 +308,6 @@ export default function Home() {
                     >
                       <HeartbeatIcon size={10} /> LIVE · 72 BPM
                     </motion.div>
-                    {/* Status chip */}
-                    <div className="absolute top-3 left-3 inline-flex items-center gap-1.5 text-[10px] font-mono tracking-wider px-2.5 py-1.5 rounded-full bg-background/70 backdrop-blur-md border border-emerald-500/40 text-emerald-400">
-                      <span className="relative flex h-1.5 w-1.5">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-500 opacity-75" />
-                        <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500" />
-                      </span>
-                      Available
-                    </div>
                     <EKGLine className="absolute bottom-0 left-0 right-0 h-8 w-full opacity-90" />
                   </div>
 

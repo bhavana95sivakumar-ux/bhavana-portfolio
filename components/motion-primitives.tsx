@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { motion, useInView, useMotionValue, useSpring, useTransform, type Variants } from "motion/react";
+import { motion, useInView, useMotionValue, useScroll, useSpring, useTransform, type Variants } from "motion/react";
 
 const baseEase = [0.22, 1, 0.36, 1] as const;
 
@@ -134,6 +134,52 @@ export function Spotlight() {
       className="pointer-events-none absolute inset-0 -z-10 transition"
       style={{ background }}
     />
+  );
+}
+
+export function Parallax({
+  children,
+  offset = 60,
+  className,
+}: {
+  children: React.ReactNode;
+  offset?: number;
+  className?: string;
+}) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
+  const y = useTransform(scrollYProgress, [0, 1], [offset, -offset]);
+  const ys = useSpring(y, { stiffness: 90, damping: 24, mass: 0.4 });
+  return (
+    <div ref={ref} className={className}>
+      <motion.div style={{ y: ys }}>{children}</motion.div>
+    </div>
+  );
+}
+
+export function ScrollReveal({
+  children,
+  className,
+  y = 24,
+  delay = 0,
+}: {
+  children: React.ReactNode;
+  className?: string;
+  y?: number;
+  delay?: number;
+}) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: false, amount: 0.25, margin: "-10% 0px -10% 0px" });
+  return (
+    <motion.div
+      ref={ref}
+      className={className}
+      initial={{ opacity: 0, y }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y }}
+      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.div>
   );
 }
 
