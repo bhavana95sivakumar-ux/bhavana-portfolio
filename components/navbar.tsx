@@ -32,7 +32,7 @@ export function Navbar() {
           <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-foreground to-foreground/60 text-background text-xs font-bold">
             BS
           </span>
-          <span className="hidden sm:inline">Dr. Bhavana Sivakumar</span>
+          <span className="hidden sm:inline">Bhavana Sivakumar</span>
         </Link>
         <nav className="hidden md:flex items-center gap-1 text-sm">
           {links.map((l) => (

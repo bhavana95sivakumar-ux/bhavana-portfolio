@@ -3,7 +3,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
-  title: "Dr. Bhavana Sivakumar, PhD — Cardiovascular Pharmacology Researcher",
+  title: "Bhavana Sivakumar, PhD — Cardiovascular Pharmacology Researcher",
   description:
     "Postdoctoral Researcher at Indiana University Indianapolis working on cardiovascular pharmacology, mitochondrial biology, and PM2.5 cardiotoxicity.",
 };

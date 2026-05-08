@@ -3,6 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import { FadeIn, Stagger, StaggerItem, TextReveal, CountUp, Spotlight, Marquee, Magnetic, EKGLine, HeartbeatIcon, DnaHelix } from "@/components/motion-primitives";
+import { FALLBACK_STATS, type Stats } from "@/lib/stats-config";
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -30,7 +31,6 @@ import {
   Sparkles,
   Award,
   Users,
-  Phone,
   FlaskConical,
   Beaker,
   Heart,
@@ -190,6 +190,20 @@ export default function Home() {
   const heroY = useTransform(scrollYProgress, [0, 0.3], [0, -80]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0.4]);
 
+  const [stats, setStats] = React.useState<Stats>(FALLBACK_STATS);
+  React.useEffect(() => {
+    let cancelled = false;
+    fetch("/api/stats")
+      .then((r) => r.json())
+      .then((data: Stats) => {
+        if (!cancelled && data && typeof data.publications === "number") setStats(data);
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <div className="min-h-screen">
       <motion.div className="fixed top-0 left-0 right-0 h-[2px] z-[60] origin-left" style={{ scaleX: progress, backgroundColor: "var(--heart)" }} />
@@ -267,22 +281,22 @@ export default function Home() {
                     <div className="inline-flex items-center gap-1.5 text-[10px] font-mono tracking-wider px-2 py-1 rounded-full bg-background/70 border border-[var(--heart)]/40 text-[var(--heart)] mb-1.5">
                       <HeartbeatIcon size={10} /> LIVE · 72 BPM
                     </div>
-                    <div className="font-semibold text-sm leading-tight">Dr. Bhavana Sivakumar</div>
+                    <div className="font-semibold text-sm leading-tight">Bhavana Sivakumar</div>
                     <div className="text-[11px] text-muted-foreground mt-0.5">Postdoctoral Fellow</div>
                     <div className="text-[10px] text-muted-foreground/80">Indiana University Indianapolis</div>
                   </div>
                 </div>
                 <div className="relative grid grid-cols-3 border-t border-border/50 divide-x divide-border/50 bg-background/40">
                   <div className="px-3 py-2.5 text-center">
-                    <div className="text-base font-bold tabular-nums text-[var(--heart)]">27<span className="text-xs">+</span></div>
+                    <div className="text-base font-bold tabular-nums text-[var(--heart)]">{stats.publications}</div>
                     <div className="text-[9px] uppercase tracking-wider text-muted-foreground mt-0.5">Papers</div>
                   </div>
                   <div className="px-3 py-2.5 text-center">
-                    <div className="text-base font-bold tabular-nums text-[var(--heart)]">312</div>
+                    <div className="text-base font-bold tabular-nums text-[var(--heart)]">{stats.citations}</div>
                     <div className="text-[9px] uppercase tracking-wider text-muted-foreground mt-0.5">Citations</div>
                   </div>
                   <div className="px-3 py-2.5 text-center">
-                    <div className="text-base font-bold tabular-nums text-[var(--heart)]">11</div>
+                    <div className="text-base font-bold tabular-nums text-[var(--heart)]">{stats.hIndex}</div>
                     <div className="text-[9px] uppercase tracking-wider text-muted-foreground mt-0.5">h-index</div>
                   </div>
                 </div>
@@ -298,7 +312,7 @@ export default function Home() {
                 </Badge>
               </motion.div>
               <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight leading-[1.05]">
-                <TextReveal text="Dr. Bhavana" />
+                <TextReveal text="Bhavana" />
                 <br />
                 <TextReveal text="Sivakumar, PhD" delay={0.2} />
               </h1>
@@ -377,15 +391,15 @@ export default function Home() {
                 </div>
                 <CardContent className="p-6">
                   <div className="space-y-1">
-                    <div className="font-semibold text-lg">Dr. Bhavana Sivakumar</div>
+                    <div className="font-semibold text-lg">Bhavana Sivakumar</div>
                     <div className="text-sm text-muted-foreground">Postdoctoral Research Fellow</div>
                     <div className="text-xs text-muted-foreground">Indiana University Indianapolis</div>
                   </div>
                   <Separator className="my-4" />
                   <div className="space-y-2.5 text-sm">
                     <div className="flex items-center gap-2 text-muted-foreground"><GraduationCap className="h-3.5 w-3.5" /> PhD, SASTRA University (2024)</div>
-                    <div className="flex items-center gap-2 text-muted-foreground"><BookOpen className="h-3.5 w-3.5" /> 27+ publications</div>
-                    <div className="flex items-center gap-2 text-muted-foreground"><Quote className="h-3.5 w-3.5" /> 312 citations · h-index 11</div>
+                    <div className="flex items-center gap-2 text-muted-foreground"><BookOpen className="h-3.5 w-3.5" /> {stats.publications} publications</div>
+                    <div className="flex items-center gap-2 text-muted-foreground"><Quote className="h-3.5 w-3.5" /> {stats.citations} citations · h-index {stats.hIndex}</div>
                     <div className="flex items-center gap-2 text-muted-foreground"><Award className="h-3.5 w-3.5" /> Best PhD Thesis, SASTRA 2024</div>
                   </div>
                 </CardContent>
@@ -396,10 +410,10 @@ export default function Home() {
           {/* Stats */}
           <Stagger className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-px bg-border rounded-xl overflow-hidden border">
             {[
-              { n: 27, suffix: "+", l: "Publications" },
-              { n: 312, suffix: "", l: "Citations" },
-              { n: 11, suffix: "", l: "h-index" },
-              { n: 30, suffix: "+", l: "Journals reviewed" },
+              { n: stats.publications, suffix: "", l: "Publications" },
+              { n: stats.citations, suffix: "", l: "Citations" },
+              { n: stats.hIndex, suffix: "", l: "h-index" },
+              { n: stats.journalsReviewed, suffix: "", l: "Journals reviewed" },
             ].map((s) => (
               <StaggerItem key={s.l} className="bg-background px-6 py-6 group hover:bg-muted/50 transition">
                 <div className="text-3xl md:text-4xl font-bold tracking-tight tabular-nums">
@@ -424,7 +438,7 @@ export default function Home() {
           </FadeIn>
           <FadeIn delay={0.15} className="md:col-span-2 space-y-5 text-muted-foreground leading-relaxed">
             <p className="text-foreground text-lg leading-relaxed">
-              Dr. Bhavana Sivakumar is a translational cardiovascular researcher whose work bridges
+              Bhavana Sivakumar is a translational cardiovascular researcher whose work bridges
               molecular pharmacology, mitochondrial biology, immunology, and cardiac pathology. Her research
               focuses on understanding the cellular and molecular mechanisms that drive cardiac injury and
               disease progression, with the goal of identifying therapeutic strategies that protect and
@@ -633,7 +647,7 @@ export default function Home() {
             <div>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Research output</h2>
               <p className="mt-2 text-muted-foreground max-w-xl">
-                27+ peer-reviewed papers, 312 citations, h-index 11, i10-index 12 — across cardiovascular
+                {stats.publications} peer-reviewed papers, {stats.citations} citations, h-index {stats.hIndex}, i10-index {stats.i10Index} — across cardiovascular
                 pharmacology, mitochondrial biology, and environmental cardiotoxicology.
               </p>
             </div>
@@ -648,10 +662,10 @@ export default function Home() {
           <FadeIn delay={0.12} className="mb-10">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-px rounded-xl overflow-hidden border border-border/60 bg-border">
               {[
-                { v: 27, suffix: "+", l: "Peer-reviewed papers" },
-                { v: 312, suffix: "", l: "Total citations" },
-                { v: 11, suffix: "", l: "h-index" },
-                { v: 12, suffix: "", l: "i10-index" },
+                { v: stats.publications, suffix: "", l: "Peer-reviewed papers" },
+                { v: stats.citations, suffix: "", l: "Total citations" },
+                { v: stats.hIndex, suffix: "", l: "h-index" },
+                { v: stats.i10Index, suffix: "", l: "i10-index" },
               ].map((s) => (
                 <div key={s.l} className="bg-background px-4 py-4">
                   <div className="text-2xl font-bold tabular-nums"><CountUp to={s.v} suffix={s.suffix} /></div>
@@ -817,9 +831,6 @@ export default function Home() {
                   <Mail className="h-4 w-4" /> bhavana95sivakumar@gmail.com
                 </a>
                 <div className="flex items-center gap-2 text-muted-foreground">
-                  <Phone className="h-4 w-4" /> +1 (314) 901-3563
-                </div>
-                <div className="flex items-center gap-2 text-muted-foreground">
                   <MapPin className="h-4 w-4" /> 75 W 18 St, Indianapolis, IN 46202
                 </div>
               </div>
@@ -855,7 +866,7 @@ export default function Home() {
 
       <footer className="border-t py-10 px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-muted-foreground">
-          <div>© 2026 Dr. Bhavana Sivakumar, PhD — All rights reserved</div>
+          <div>© 2026 Bhavana Sivakumar, PhD — All rights reserved</div>
           <div className="font-mono text-xs">Built with Next.js · shadcn/ui · Motion</div>
         </div>
       </footer>
