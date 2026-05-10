@@ -187,6 +187,155 @@ const techniques = [
 
 const years = Array.from(new Set(publications.map((p) => p.year))).sort((a, b) => b - a);
 
+function MobileAwardCard({ honor, index, total }: { honor: { title: string; org: string; year: string }; index: number; total: number }) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 95%", "end 20%"] });
+  const opacity = useTransform(scrollYProgress, [0, 0.25, 0.85, 1], [0, 1, 1, 0.6]);
+  const scale = useTransform(scrollYProgress, [0, 0.3, 0.8, 1], [0.85, 1, 1, 0.97]);
+  const y = useTransform(scrollYProgress, [0, 0.4], [60, 0]);
+  const rotateX = useTransform(scrollYProgress, [0, 0.4], [18, 0]);
+  const shineX = useTransform(scrollYProgress, [0, 1], ["-120%", "220%"]);
+  const isFeatured = index === 0;
+
+  return (
+    <motion.div
+      ref={ref}
+      style={{ opacity, scale, y, rotateX, transformPerspective: 1000 }}
+      className="relative"
+    >
+      {/* Big ghost year */}
+      <div
+        aria-hidden
+        className={`absolute -top-6 right-0 font-mono font-black tracking-tighter leading-none select-none pointer-events-none text-[5.5rem] ${
+          isFeatured ? "text-[var(--heart)]/15" : "text-foreground/[0.06]"
+        }`}
+      >
+        {honor.year}
+      </div>
+
+      {/* Index badge */}
+      <div className="absolute -left-1 top-3 z-10">
+        <div
+          className={`h-7 w-7 rounded-full flex items-center justify-center text-[10px] font-mono font-bold border-2 backdrop-blur ${
+            isFeatured
+              ? "bg-[var(--heart)] text-white border-background shadow-lg shadow-[var(--heart-soft)]"
+              : "bg-background text-muted-foreground border-border"
+          }`}
+        >
+          {String(index + 1).padStart(2, "0")}
+        </div>
+      </div>
+
+      <Card
+        className={`relative overflow-hidden ml-8 ${
+          isFeatured
+            ? "border-[var(--heart)]/50 bg-gradient-to-br from-[var(--heart-soft)] via-background to-background shadow-2xl shadow-[var(--heart-soft)]"
+            : "border-border/60 bg-gradient-to-br from-muted/40 to-background"
+        }`}
+      >
+        {/* Shine sweep on scroll */}
+        <motion.div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            x: shineX,
+            background:
+              "linear-gradient(105deg, transparent 35%, hsl(var(--foreground) / 0.12) 50%, transparent 65%)",
+          }}
+        />
+
+        {isFeatured && (
+          <motion.div
+            aria-hidden
+            className="absolute -inset-px rounded-xl pointer-events-none opacity-60"
+            style={{
+              background:
+                "conic-gradient(from 0deg, transparent, var(--heart) 25%, transparent 50%, var(--heart-soft) 75%, transparent)",
+            }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+          />
+        )}
+
+        <CardContent className={`relative p-5 ${isFeatured ? "bg-background/80 m-[1px] rounded-[11px]" : ""}`}>
+          <div className="flex items-start gap-4">
+            <motion.div
+              whileTap={{ scale: 0.9, rotate: -10 }}
+              className={`h-12 w-12 rounded-xl flex items-center justify-center shrink-0 border ${
+                isFeatured
+                  ? "bg-[var(--heart)] text-white border-[var(--heart)] shadow-lg shadow-[var(--heart-soft)]"
+                  : "bg-foreground/5 border-border"
+              }`}
+            >
+              <Award className="h-5 w-5" />
+            </motion.div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2 mb-1.5">
+                <Badge
+                  variant="outline"
+                  className={`font-mono text-[10px] ${
+                    isFeatured ? "border-[var(--heart)]/50 text-[var(--heart)] bg-[var(--heart-soft)]" : ""
+                  }`}
+                >
+                  {honor.year}
+                </Badge>
+                {isFeatured && (
+                  <Badge className="bg-[var(--heart)] hover:bg-[var(--heart)] text-white text-[10px] font-mono">
+                    ★ TOP HONOR
+                  </Badge>
+                )}
+              </div>
+              <h3
+                className={`font-bold leading-snug ${
+                  isFeatured ? "text-base text-[var(--heart)]" : "text-sm"
+                }`}
+              >
+                {honor.title}
+              </h3>
+              <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">{honor.org}</p>
+            </div>
+          </div>
+
+          {/* Progress dots */}
+          <div className="mt-4 flex items-center gap-1.5">
+            {Array.from({ length: total }).map((_, i) => (
+              <div
+                key={i}
+                className={`h-0.5 flex-1 rounded-full transition-colors ${
+                  i <= index ? (isFeatured ? "bg-[var(--heart)]" : "bg-foreground/40") : "bg-border"
+                }`}
+              />
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
+
+function MobileAwardsTimeline({ honors }: { honors: { title: string; org: string; year: string }[] }) {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start 80%", "end 60%"] });
+  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
+
+  return (
+    <div ref={ref} className="relative">
+      {/* Vertical timeline */}
+      <div className="absolute left-3 top-2 bottom-2 w-[2px] bg-border/60 rounded-full overflow-hidden">
+        <motion.div
+          className="absolute top-0 left-0 w-full bg-gradient-to-b from-[var(--heart)] via-[var(--heart)] to-[var(--heart)]/40"
+          style={{ height: lineHeight }}
+        />
+      </div>
+      <div className="space-y-10 pl-2">
+        {honors.map((h, i) => (
+          <MobileAwardCard key={h.title} honor={h} index={i} total={honors.length} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.3 });
@@ -728,7 +877,13 @@ export default function Home() {
               <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-2">Awards</h2>
               <p className="text-sm text-muted-foreground mb-6">A lifetime of recognition for excellence in research and academics.</p>
             </FadeIn>
-            <Stagger className="space-y-3">
+
+            {/* Mobile: cinematic scroll-driven timeline */}
+            <div className="md:hidden">
+              <MobileAwardsTimeline honors={honors} />
+            </div>
+
+            <Stagger className="space-y-3 hidden md:block">
               {honors.map((h, i) => {
                 const isFeatured = i === 0;
                 return (
@@ -812,18 +967,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Reviewer panel */}
-        <div className="max-w-6xl mx-auto mt-16">
-          <FadeIn>
-            <div className="text-xs font-mono text-muted-foreground mb-2">06 — SERVICE</div>
-            <h3 className="text-xl md:text-2xl font-semibold tracking-tight mb-6">Peer reviewer</h3>
-            <div className="flex flex-wrap gap-2">
-              {reviewerJournals.map((j) => (
-                <Badge key={j} variant="outline" className="font-normal py-1.5 px-3">{j}</Badge>
-              ))}
-            </div>
-          </FadeIn>
-        </div>
       </section>
 
       {/* Publications + Chart */}
@@ -878,6 +1021,21 @@ export default function Home() {
               <TabsContent key={y} value={String(y)} className="mt-6"><PubList pubs={publications.filter((p) => p.year === y)} /></TabsContent>
             ))}
           </Tabs>
+        </div>
+      </section>
+
+      {/* Service */}
+      <section id="service" className="py-16 sm:py-24 px-5 sm:px-6 border-t">
+        <div className="max-w-6xl mx-auto">
+          <FadeIn>
+            <div className="text-xs font-mono text-muted-foreground mb-2">06 — SERVICE</div>
+            <h3 className="text-xl md:text-2xl font-semibold tracking-tight mb-6">Peer reviewer</h3>
+            <div className="flex flex-wrap gap-2">
+              {reviewerJournals.map((j) => (
+                <Badge key={j} variant="outline" className="font-normal py-1.5 px-3">{j}</Badge>
+              ))}
+            </div>
+          </FadeIn>
         </div>
       </section>
 
