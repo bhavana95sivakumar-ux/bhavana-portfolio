@@ -1094,7 +1094,7 @@ export default function Home() {
                 </Magnetic>
               </div>
             </FadeIn>
-            <Stagger className="grid sm:grid-cols-2 gap-3">
+            <Stagger className="grid grid-cols-2 gap-2 sm:gap-3">
               <StaggerItem><ContactLink href="https://scholar.google.com/citations?user=1GZzUakAAAAJ&hl=en" label="Google Scholar" desc="Citations & profile" icon={BookOpen} /></StaggerItem>
               <StaggerItem><ContactLink href="https://www.researchgate.net/profile/Bhavana-Sivakumar" label="ResearchGate" desc="Research network" icon={Microscope} /></StaggerItem>
               <StaggerItem><ContactLink href="https://www.linkedin.com/in/bhavana-sivakumar" label="LinkedIn" desc="Active presence · DM open" icon={Linkedin} /></StaggerItem>
@@ -1248,19 +1248,19 @@ function ContactLink({ href, label, desc, icon: Icon }: { href: string; label: s
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
       <Card className="h-full border-border/60 hover:border-foreground/30 hover:shadow-lg transition-shadow">
-        {/* Mobile: compact horizontal row */}
-        <CardContent className="p-3 flex items-center gap-3 sm:hidden">
-          <div className="h-9 w-9 rounded-md bg-muted flex items-center justify-center shrink-0 group-hover:bg-foreground group-hover:text-background transition-colors">
-            <Icon className="h-4 w-4" />
+        {/* Mobile/tablet: compact 2-col tile */}
+        <CardContent className="p-3 md:hidden">
+          <div className="flex items-center justify-between mb-2">
+            <div className="h-8 w-8 rounded-md bg-muted flex items-center justify-center shrink-0 group-hover:bg-foreground group-hover:text-background transition-colors">
+              <Icon className="h-3.5 w-3.5" />
+            </div>
+            <ArrowRight className="h-3.5 w-3.5 text-muted-foreground -rotate-45 shrink-0 group-hover:rotate-0 group-hover:text-foreground transition-all duration-300" />
           </div>
-          <div className="flex-1 min-w-0">
-            <div className="font-semibold text-sm leading-tight truncate">{label}</div>
-            <div className="text-[11px] text-muted-foreground leading-tight truncate">{desc}</div>
-          </div>
-          <ArrowRight className="h-4 w-4 text-muted-foreground -rotate-45 shrink-0 group-hover:rotate-0 group-hover:text-foreground transition-all duration-300" />
+          <div className="font-semibold text-[13px] leading-tight truncate">{label}</div>
+          <div className="text-[10px] text-muted-foreground leading-tight mt-0.5 truncate">{desc}</div>
         </CardContent>
         {/* Desktop: original card style */}
-        <CardContent className="p-5 hidden sm:block">
+        <CardContent className="p-5 hidden md:block">
           <div className="flex items-start justify-between">
             <div className="h-9 w-9 rounded-md bg-muted flex items-center justify-center group-hover:bg-foreground group-hover:text-background transition-colors">
               <Icon className="h-4 w-4" />
