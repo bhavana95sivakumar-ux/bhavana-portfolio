@@ -139,7 +139,7 @@ const education = [
 ];
 
 const honors = [
-  { year: "2024", title: "Best PhD Thesis Award in Sciences", org: "SASTRA University, India" },
+  { year: "2024", title: "Chancellor's Best PhD Thesis Award in Sciences", org: "SASTRA University, India" },
   { year: "2023", title: "ICMR Senior Research Fellowship", org: "Indian Council of Medical Research" },
   { year: "2018", title: "Third Rank — M.Sc. Program", org: "Bharathiar University, India" },
   { year: "2017", title: "Best Science Magazine Award", org: "Zoological Society of Kerala — Oikos'16" },
@@ -634,7 +634,7 @@ export default function Home() {
                     <div className="flex items-center gap-2 text-muted-foreground"><GraduationCap className="h-3.5 w-3.5" /> PhD, SASTRA University (2024)</div>
                     <div className="flex items-center gap-2 text-muted-foreground"><BookOpen className="h-3.5 w-3.5" /> {stats.publications} publications</div>
                     <div className="flex items-center gap-2 text-muted-foreground"><Quote className="h-3.5 w-3.5" /> {stats.citations} citations · h-index {stats.hIndex}</div>
-                    <div className="flex items-center gap-2 text-muted-foreground"><Award className="h-3.5 w-3.5" /> Best PhD Thesis, SASTRA 2024</div>
+                    <div className="flex items-center gap-2 text-muted-foreground"><Award className="h-3.5 w-3.5" /> Chancellor's Best PhD Thesis, SASTRA 2024</div>
                     <div className="flex items-center gap-2 text-muted-foreground"><Award className="h-3.5 w-3.5" /> ICMR Senior Research Fellowship</div>
                   </div>
                 </CardContent>
@@ -691,7 +691,7 @@ export default function Home() {
             <p>
               Previously, at the University of Cincinnati, she investigated immune-mediated mechanisms in
               diabetic cardiomyopathy. Her doctoral research at SASTRA University focused on cardiovascular
-              injury and therapeutic intervention, earning her the Best PhD Thesis Award in Sciences in 2024.
+              injury and therapeutic intervention, earning her the Chancellor's Best PhD Thesis Award in Sciences in 2024.
             </p>
             <p>
               Across her academic career, Dr. Sivakumar has developed expertise in cardiovascular disease
