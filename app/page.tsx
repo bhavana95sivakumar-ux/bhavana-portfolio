@@ -1237,7 +1237,19 @@ function ContactLink({ href, label, desc, icon: Icon }: { href: string; label: s
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
     >
       <Card className="h-full border-border/60 hover:border-foreground/30 hover:shadow-lg transition-shadow">
-        <CardContent className="p-5">
+        {/* Mobile: compact horizontal row */}
+        <CardContent className="p-3 flex items-center gap-3 sm:hidden">
+          <div className="h-9 w-9 rounded-md bg-muted flex items-center justify-center shrink-0 group-hover:bg-foreground group-hover:text-background transition-colors">
+            <Icon className="h-4 w-4" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="font-semibold text-sm leading-tight truncate">{label}</div>
+            <div className="text-[11px] text-muted-foreground leading-tight truncate">{desc}</div>
+          </div>
+          <ArrowRight className="h-4 w-4 text-muted-foreground -rotate-45 shrink-0 group-hover:rotate-0 group-hover:text-foreground transition-all duration-300" />
+        </CardContent>
+        {/* Desktop: original card style */}
+        <CardContent className="p-5 hidden sm:block">
           <div className="flex items-start justify-between">
             <div className="h-9 w-9 rounded-md bg-muted flex items-center justify-center group-hover:bg-foreground group-hover:text-background transition-colors">
               <Icon className="h-4 w-4" />
