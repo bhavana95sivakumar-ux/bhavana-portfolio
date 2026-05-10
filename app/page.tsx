@@ -4,6 +4,7 @@ import * as React from "react";
 import Image from "next/image";
 import { FadeIn, Stagger, StaggerItem, TextReveal, CountUp, Spotlight, Marquee, Magnetic, EKGLine, HeartbeatIcon, DnaHelix, Tilt3D, Parallax, ScrollReveal } from "@/components/motion-primitives";
 import { FALLBACK_STATS, type Stats } from "@/lib/stats-config";
+import { cn } from "@/lib/utils";
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
@@ -709,61 +710,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Publications + Chart */}
-      <section id="publications" className="py-16 sm:py-24 px-5 sm:px-6 border-t bg-muted/30">
-        <div className="max-w-6xl mx-auto">
-          <FadeIn>
-            <div className="text-xs font-mono text-muted-foreground mb-2">04 — PUBLICATIONS</div>
-          </FadeIn>
-          <FadeIn delay={0.1} className="flex items-end justify-between mb-10 flex-wrap gap-4">
-            <div>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Research output</h2>
-              <p className="mt-2 text-muted-foreground max-w-xl">
-                {stats.publications} peer-reviewed papers, {stats.citations} citations, h-index {stats.hIndex}, i10-index {stats.i10Index} — across cardiovascular
-                pharmacology, mitochondrial biology, and environmental cardiotoxicology.
-              </p>
-            </div>
-            <Magnetic>
-              <a href="https://scholar.google.com/citations?user=1GZzUakAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" className={buttonVariants({ variant: "outline", className: "rounded-full group" })}>
-                Google Scholar <ExternalLink className="ml-1 h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </a>
-            </Magnetic>
-          </FadeIn>
-
-          {/* Mini stats strip — Google Scholar source of truth */}
-          <FadeIn delay={0.12} className="mb-10">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-px rounded-xl overflow-hidden border border-border/60 bg-border">
-              {[
-                { v: stats.publications, suffix: "", l: "Peer-reviewed papers" },
-                { v: stats.citations, suffix: "", l: "Total citations" },
-                { v: stats.hIndex, suffix: "", l: "h-index" },
-                { v: stats.i10Index, suffix: "", l: "i10-index" },
-              ].map((s) => (
-                <div key={s.l} className="bg-background px-4 py-4">
-                  <div className="text-2xl font-bold tabular-nums"><CountUp to={s.v} suffix={s.suffix} /></div>
-                  <div className="text-xs text-muted-foreground mt-0.5">{s.l}</div>
-                </div>
-              ))}
-            </div>
-          </FadeIn>
-
-          <Tabs defaultValue="all">
-            <TabsList className="flex-wrap h-auto">
-              <TabsTrigger value="all">All ({publications.length})</TabsTrigger>
-              {years.map((y) => (
-                <TabsTrigger key={y} value={String(y)}>
-                  {y} <span className="ml-1 text-muted-foreground/70 text-[10px]">·{publications.filter((p) => p.year === y).length}</span>
-                </TabsTrigger>
-              ))}
-            </TabsList>
-            <TabsContent value="all" className="mt-6"><PubList pubs={publications} /></TabsContent>
-            {years.map((y) => (
-              <TabsContent key={y} value={String(y)} className="mt-6"><PubList pubs={publications.filter((p) => p.year === y)} /></TabsContent>
-            ))}
-          </Tabs>
-        </div>
-      </section>
-
       {/* Honors & Workshops */}
       <section id="honors" className="py-16 sm:py-24 px-5 sm:px-6 border-t relative overflow-hidden">
         {/* Subtle aurora glow behind awards */}
@@ -777,7 +723,7 @@ export default function Home() {
           <div>
             <FadeIn>
               <div className="text-xs font-mono text-[var(--heart)] mb-2 flex items-center gap-2">
-                <HeartbeatIcon size={12} /> 05 — HONORS
+                <HeartbeatIcon size={12} /> 04 — HONORS
               </div>
               <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-2">Awards</h2>
               <p className="text-sm text-muted-foreground mb-6">A lifetime of recognition for excellence in research and academics.</p>
@@ -839,7 +785,7 @@ export default function Home() {
 
           <div>
             <FadeIn>
-              <div className="text-xs font-mono text-muted-foreground mb-2">06 — TEACHING</div>
+              <div className="text-xs font-mono text-muted-foreground mb-2">05 — TEACHING</div>
               <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-8 inline-flex items-center gap-3">
                 Workshops <Users className="h-7 w-7" />
               </h2>
@@ -869,7 +815,7 @@ export default function Home() {
         {/* Reviewer panel */}
         <div className="max-w-6xl mx-auto mt-16">
           <FadeIn>
-            <div className="text-xs font-mono text-muted-foreground mb-2">07 — SERVICE</div>
+            <div className="text-xs font-mono text-muted-foreground mb-2">06 — SERVICE</div>
             <h3 className="text-xl md:text-2xl font-semibold tracking-tight mb-6">Peer reviewer</h3>
             <div className="flex flex-wrap gap-2">
               {reviewerJournals.map((j) => (
@@ -877,6 +823,61 @@ export default function Home() {
               ))}
             </div>
           </FadeIn>
+        </div>
+      </section>
+
+      {/* Publications + Chart */}
+      <section id="publications" className="py-16 sm:py-24 px-5 sm:px-6 border-t bg-muted/30">
+        <div className="max-w-6xl mx-auto">
+          <FadeIn>
+            <div className="text-xs font-mono text-muted-foreground mb-2">07 — PUBLICATIONS</div>
+          </FadeIn>
+          <FadeIn delay={0.1} className="flex items-end justify-between mb-10 flex-wrap gap-4">
+            <div>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Research output</h2>
+              <p className="mt-2 text-muted-foreground max-w-xl">
+                {stats.publications} peer-reviewed papers, {stats.citations} citations, h-index {stats.hIndex}, i10-index {stats.i10Index} — across cardiovascular
+                pharmacology, mitochondrial biology, and environmental cardiotoxicology.
+              </p>
+            </div>
+            <Magnetic>
+              <a href="https://scholar.google.com/citations?user=1GZzUakAAAAJ&hl=en" target="_blank" rel="noopener noreferrer" className={buttonVariants({ variant: "outline", className: "rounded-full group" })}>
+                Google Scholar <ExternalLink className="ml-1 h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+            </Magnetic>
+          </FadeIn>
+
+          {/* Mini stats strip — Google Scholar source of truth */}
+          <FadeIn delay={0.12} className="mb-10">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-px rounded-xl overflow-hidden border border-border/60 bg-border">
+              {[
+                { v: stats.publications, suffix: "", l: "Peer-reviewed papers" },
+                { v: stats.citations, suffix: "", l: "Total citations" },
+                { v: stats.hIndex, suffix: "", l: "h-index" },
+                { v: stats.i10Index, suffix: "", l: "i10-index" },
+              ].map((s) => (
+                <div key={s.l} className="bg-background px-4 py-4">
+                  <div className="text-2xl font-bold tabular-nums"><CountUp to={s.v} suffix={s.suffix} /></div>
+                  <div className="text-xs text-muted-foreground mt-0.5">{s.l}</div>
+                </div>
+              ))}
+            </div>
+          </FadeIn>
+
+          <Tabs defaultValue="all">
+            <TabsList className="flex-wrap h-auto">
+              <TabsTrigger value="all">All ({publications.length})</TabsTrigger>
+              {years.map((y) => (
+                <TabsTrigger key={y} value={String(y)}>
+                  {y} <span className="ml-1 text-muted-foreground/70 text-[10px]">·{publications.filter((p) => p.year === y).length}</span>
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            <TabsContent value="all" className="mt-6"><PubList pubs={publications} /></TabsContent>
+            {years.map((y) => (
+              <TabsContent key={y} value={String(y)} className="mt-6"><PubList pubs={publications.filter((p) => p.year === y)} /></TabsContent>
+            ))}
+          </Tabs>
         </div>
       </section>
 
@@ -976,6 +977,8 @@ export default function Home() {
 }
 
 function PubList({ pubs }: { pubs: Pub[] }) {
+  const MOBILE_INITIAL = 6;
+  const [expanded, setExpanded] = React.useState(false);
   const grouped = React.useMemo(() => {
     const m = new Map<number, Pub[]>();
     pubs.forEach((p) => {
@@ -985,18 +988,29 @@ function PubList({ pubs }: { pubs: Pub[] }) {
     return Array.from(m.entries()).sort((a, b) => b[0] - a[0]);
   }, [pubs]);
 
+  let flatIdx = 0;
+  const hidesAny = pubs.length > MOBILE_INITIAL;
+
   return (
     <div className="space-y-10">
-      {grouped.map(([year, items]) => (
-        <FadeIn key={year} y={12}>
+      {grouped.map(([year, items]) => {
+        const yearStart = flatIdx;
+        const yearHiddenOnMobile = !expanded && yearStart >= MOBILE_INITIAL;
+        const rendered = items.map((p) => {
+          const idx = flatIdx++;
+          const itemHiddenOnMobile = !expanded && idx >= MOBILE_INITIAL;
+          return { p, itemHiddenOnMobile };
+        });
+        return (
+        <FadeIn key={year} y={12} className={cn(yearHiddenOnMobile && "hidden md:block")}>
           <div className="flex items-center gap-3 mb-3">
             <div className="font-mono text-xs font-semibold text-[var(--heart)] tracking-wider">{year}</div>
             <div className="flex-1 h-px bg-gradient-to-r from-[var(--heart)]/40 to-transparent" />
             <div className="text-xs text-muted-foreground font-mono">{items.length} paper{items.length > 1 ? "s" : ""}</div>
           </div>
           <Stagger className="grid md:grid-cols-2 gap-2">
-            {items.map((p) => (
-              <StaggerItem key={p.title}>
+            {rendered.map(({ p, itemHiddenOnMobile }) => (
+              <StaggerItem key={p.title} className={cn(itemHiddenOnMobile && "hidden md:block")}>
                 <HoverCard>
                   <HoverCardTrigger render={<div />}>
                     <motion.div
@@ -1037,7 +1051,19 @@ function PubList({ pubs }: { pubs: Pub[] }) {
             ))}
           </Stagger>
         </FadeIn>
-      ))}
+        );
+      })}
+      {hidesAny && (
+        <div className="md:hidden flex justify-center pt-2">
+          <button
+            type="button"
+            onClick={() => setExpanded((v) => !v)}
+            className={buttonVariants({ variant: "outline", className: "rounded-full" })}
+          >
+            {expanded ? "Show less" : `Show all ${pubs.length} publications`}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

@@ -18,8 +18,8 @@ const links = [
   { href: "#about", label: "About" },
   { href: "#research", label: "Research" },
   { href: "#experience", label: "Experience" },
-  { href: "#publications", label: "Publications" },
   { href: "#honors", label: "Honors" },
+  { href: "#publications", label: "Publications" },
   { href: "#contact", label: "Contact" },
 ];
 
