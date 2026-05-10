@@ -1073,7 +1073,7 @@ export default function Home() {
                   <Mail className="h-4 w-4" /> bhavana95sivakumar@gmail.com
                 </a>
                 <div className="flex items-center gap-2 text-muted-foreground">
-                  <MapPin className="h-4 w-4" /> 75 W 18 St, Indianapolis, IN 46202
+                  <MapPin className="h-4 w-4" /> Indianapolis, Indiana, USA
                 </div>
               </div>
               <div className="mt-8 flex flex-wrap gap-3">
