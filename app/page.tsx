@@ -733,9 +733,6 @@ export default function Home() {
                 <HeartbeatIcon size={12} /> 02 — RESEARCH
               </div>
               <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Focus areas</h2>
-              <p className="mt-3 text-muted-foreground max-w-xl">
-                Six interconnected threads — from the mitochondrion to the whole heart — chasing cardioprotection.
-              </p>
             </div>
             <Badge variant="secondary" className="gap-1.5">
               <Sparkles className="h-3 w-3" /> Interdisciplinary
