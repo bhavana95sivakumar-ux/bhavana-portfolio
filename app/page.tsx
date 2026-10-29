@@ -52,30 +52,30 @@ type Pub = { title: string; journal: string; year: number; cites: number | null;
 const publications: Pub[] = [
   { title: "Methylation of the Plant Flavonoid Fisetin to Geraldol Enhances Cardioprotective Efficacy via PI3K/Akt-Dependent Mitochondrial Preservation", journal: "Pharmacological Research – Natural Products", year: 2026, cites: null, authors: "Prem PN, Sivakumar B, Yegneshwaran V, Boovarahan SR, Kurian GA" },
   { title: "Pre-Conditioning and Post-Conditioning of Ischemia Reperfused Rat Hearts", journal: "Journal of Biochemical and Molecular Toxicology", year: 2025, cites: 1, authors: "Sivakumar B, Kurian GA" },
-  { title: "PM2.5 Induced Vascular and Myocardial Calcification Impairs Ischemia-reperfusion Tolerance via Mitochondrial Dysregulation", journal: "Cell Biochemistry and Biophysics", year: 2025, cites: 1, authors: "Sivakumar B, Kurian GA" },
+  { title: "PM2.5 Induced Vascular and Myocardial Calcification Impairs Ischemia-reperfusion Tolerance via Mitochondrial Dysregulation", journal: "Cell Biochemistry and Biophysics", year: 2025, cites: 3, authors: "Sivakumar B, Kurian GA" },
   { title: "Sodium thiosulfate mitigates PM2.5-induced cardiotoxicity by preservation of mitochondrial function", journal: "Fundamental & Clinical Pharmacology", year: 2025, cites: null, authors: "Sivakumar B, Kurian GA" },
-  { title: "Mitigating PM2.5 Induced Myocardial Metal Deposition Through Sodium Thiosulfate", journal: "Environmental Toxicology", year: 2025, cites: 3, authors: "Sivakumar B, Kurian GA" },
-  { title: "Comparative evaluation of single and multiple exposure to PM2.5 in respirable air on cardiac physiology, structure and function in a Wistar rat model", journal: "Journal of Environmental Sciences (China)", year: 2025, cites: 2, authors: "Sivakumar B, Kurian GA" },
-  { title: "Temporal dynamics of PM2.5 induced cell death: Emphasizing inflammation as key mediator in the late stages of prolonged myocardial toxicity", journal: "Experimental Cell Research", year: 2025, cites: 1, authors: "Sivakumar B, Kurian GA" },
+  { title: "Mitigating PM2.5 Induced Myocardial Metal Deposition Through Sodium Thiosulfate", journal: "Environmental Toxicology", year: 2025, cites: 5, authors: "Sivakumar B, Kurian GA" },
+  { title: "Comparative evaluation of single and multiple exposure to PM2.5 in respirable air on cardiac physiology, structure and function in a Wistar rat model", journal: "Journal of Environmental Sciences (China)", year: 2025, cites: 4, authors: "Sivakumar B, Kurian GA" },
+  { title: "Temporal dynamics of PM2.5 induced cell death: Emphasizing inflammation as key mediator in the late stages of prolonged myocardial toxicity", journal: "Experimental Cell Research", year: 2025, cites: 3, authors: "Sivakumar B, Kurian GA" },
   { title: "Mitochondrial Toxicity of PM2.5 Leads to Cardiac Failure: A Comparative Evaluation of PM2.5 from Ambient Air, Diesel Exhaust and SRM 2975", journal: "International Journal of Environmental Research", year: 2025, cites: 1, authors: "Sivakumar B, Kurian GA" },
   { title: "Mitochondrial proteases in cancer development and progression", journal: "Pathophysiological Aspects of Proteases in Cancer (Book)", year: 2025, cites: null, authors: "Kurian GA, Sivakumar B" },
-  { title: "The Worsening of Myocardial Ischemia–Reperfusion Injury in Uremic Cardiomyopathy is Further Aggravated by PM2.5 Exposure", journal: "Cardiovascular Toxicology", year: 2024, cites: 5, authors: "Sivakumar B, Kurian GA" },
-  { title: "Investigating the temporal link between PM2.5 exposure and acceleration of myocardial ischemia reperfusion injury", journal: "Environmental Pollution", year: 2024, cites: 6, authors: "Sivakumar B, Kurian GA" },
-  { title: "PM2.5 toxicity in blood impairs cardiac redox balance and promotes mitochondrial dysfunction in rat heart", journal: "Journal of Biochemical and Molecular Toxicology", year: 2024, cites: 11, authors: "Sivakumar B, Kurian GA" },
+  { title: "The Worsening of Myocardial Ischemia–Reperfusion Injury in Uremic Cardiomyopathy is Further Aggravated by PM2.5 Exposure", journal: "Cardiovascular Toxicology", year: 2024, cites: 8, authors: "Sivakumar B, Kurian GA" },
+  { title: "Investigating the temporal link between PM2.5 exposure and acceleration of myocardial ischemia reperfusion injury", journal: "Environmental Pollution", year: 2024, cites: 9, authors: "Sivakumar B, Kurian GA" },
+  { title: "PM2.5 toxicity in blood impairs cardiac redox balance and promotes mitochondrial dysfunction in rat heart", journal: "Journal of Biochemical and Molecular Toxicology", year: 2024, cites: 16, authors: "Sivakumar B, Kurian GA" },
   { title: "Increased Susceptibility of Cardiac Tissue to PM2.5-Induced Toxicity in Uremic Cardiomyopathic Rats", journal: "Environmental Toxicology", year: 2024, cites: null, authors: "Sivakumar B, Kurian GA" },
   { title: "DNA hypomethylation by fisetin preserves mitochondria functional genes and contributes to the protection of I/R rat heart", journal: "Functional & Integrative Genomics", year: 2023, cites: 9, authors: "Boovarahan SR, Balu K, Prem P, Sivakumar B, Kurian GA" },
-  { title: "PM2.5 Exposure-Linked Mitochondrial Dysfunction Negates SB216763-Mediated Cardio-Protection against Myocardial Ischemia–Reperfusion Injury", journal: "Life", year: 2023, cites: 4, authors: "Sivakumar B, Nadeem A, Dar MA, Kurian GA" },
-  { title: "Exposure to real ambient particulate matter inflicts cardiac electrophysiological disturbances, vascular calcification, and mitochondrial bioenergetics decline", journal: "Environmental Science and Pollution Research", year: 2023, cites: 10, authors: "Sivakumar B, Kurian GA" },
-  { title: "PM2.5-Induced Cardiac Structural Modifications and Declined Pro-Survival Signalling Pathways", journal: "Cells", year: 2023, cites: 4, authors: "Sivakumar B, Ali N, Ahmad SF, Nadeem A, Waseem M, Kurian GA" },
+  { title: "PM2.5 Exposure-Linked Mitochondrial Dysfunction Negates SB216763-Mediated Cardio-Protection against Myocardial Ischemia–Reperfusion Injury", journal: "Life", year: 2023, cites: 6, authors: "Sivakumar B, Nadeem A, Dar MA, Kurian GA" },
+  { title: "Exposure to real ambient particulate matter inflicts cardiac electrophysiological disturbances, vascular calcification, and mitochondrial bioenergetics decline", journal: "Environmental Science and Pollution Research", year: 2023, cites: 13, authors: "Sivakumar B, Kurian GA" },
+  { title: "PM2.5-Induced Cardiac Structural Modifications and Declined Pro-Survival Signalling Pathways", journal: "Cells", year: 2023, cites: 5, authors: "Sivakumar B, Ali N, Ahmad SF, Nadeem A, Waseem M, Kurian GA" },
   { title: "PM2.5 from diesel exhaust attenuated fisetin mediated cytoprotection in H9c2 cardiomyocytes", journal: "Drug and Chemical Toxicology", year: 2023, cites: 11, authors: "Sivakumar B, Kurian GA" },
   { title: "Long-term administration of fisetin was not as effective as short term in ameliorating IR injury in isolated rat heart", journal: "Naunyn-Schmiedeberg's Archives of Pharmacology", year: 2022, cites: 5, authors: "Prem PN, Sivakumar B, Boovarahan SR, Kurian GA" },
-  { title: "Consequential Impact of Particulate Matter Linked Inter-Fibrillar Mitochondrial Dysfunction", journal: "Biology (Basel)", year: 2022, cites: 17, authors: "Sivakumar B, AlAsmari AF, Ali N, Waseem M, Kurian GA" },
-  { title: "Fisetin Preserves Interfibrillar Mitochondria to Protect Against Myocardial Ischemia-Reperfusion Injury", journal: "Cell Biochemistry and Biophysics", year: 2022, cites: 21, authors: "Shanmugam K, Prem PN, Boovarahan SR, Sivakumar B, Kurian GA" },
-  { title: "PM2.5 Exposure Lowers Mitochondrial Endurance During Cardiac Recovery in a Rat Model of Myocardial Infarction", journal: "Cardiovascular Toxicology", year: 2022, cites: 13, authors: "Sivakumar B, Kurian GA" },
-  { title: "Inhalation of PM2.5 from diesel exhaust promotes impairment of mitochondrial bioenergetics", journal: "Inhalation Toxicology", year: 2022, cites: 12, authors: "Sivakumar B, Kurian GA" },
-  { title: "Diesel particulate matter exposure deteriorates cardiovascular health", journal: "Chemico-Biological Interactions", year: 2022, cites: 25, authors: "Sivakumar B, Kurian GA" },
-  { title: "Mitochondria and traffic-related air pollution linked coronary artery calcification", journal: "Reviews on Environmental Health", year: 2021, cites: 12, authors: "Sivakumar B, Kurian GA" },
-  { title: "Fisetin Attenuates Myocardial Ischemia-Reperfusion Injury by Activating the RISK Signaling Pathway", journal: "Frontiers in Pharmacology", year: 2021, cites: 49, authors: "Shanmugam K, Boovarahan SR, Prem P, Sivakumar B, Kurian GA" },
+  { title: "Consequential Impact of Particulate Matter Linked Inter-Fibrillar Mitochondrial Dysfunction", journal: "Biology (Basel)", year: 2022, cites: 21, authors: "Sivakumar B, AlAsmari AF, Ali N, Waseem M, Kurian GA" },
+  { title: "Fisetin Preserves Interfibrillar Mitochondria to Protect Against Myocardial Ischemia-Reperfusion Injury", journal: "Cell Biochemistry and Biophysics", year: 2022, cites: 22, authors: "Shanmugam K, Prem PN, Boovarahan SR, Sivakumar B, Kurian GA" },
+  { title: "PM2.5 Exposure Lowers Mitochondrial Endurance During Cardiac Recovery in a Rat Model of Myocardial Infarction", journal: "Cardiovascular Toxicology", year: 2022, cites: 17, authors: "Sivakumar B, Kurian GA" },
+  { title: "Inhalation of PM2.5 from diesel exhaust promotes impairment of mitochondrial bioenergetics", journal: "Inhalation Toxicology", year: 2022, cites: 13, authors: "Sivakumar B, Kurian GA" },
+  { title: "Diesel particulate matter exposure deteriorates cardiovascular health", journal: "Chemico-Biological Interactions", year: 2022, cites: 30, authors: "Sivakumar B, Kurian GA" },
+  { title: "Mitochondria and traffic-related air pollution linked coronary artery calcification", journal: "Reviews on Environmental Health", year: 2021, cites: 14, authors: "Sivakumar B, Kurian GA" },
+  { title: "Fisetin Attenuates Myocardial Ischemia-Reperfusion Injury by Activating the RISK Signaling Pathway", journal: "Frontiers in Pharmacology", year: 2021, cites: 50, authors: "Shanmugam K, Boovarahan SR, Prem P, Sivakumar B, Kurian GA" },
 ];
 
 const research = [
@@ -371,7 +371,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen pb-24 md:pb-0">
+    <div className="min-h-screen pb-20 md:pb-0">
       <CursorGlow />
       <motion.div className="fixed top-0 left-0 right-0 h-[2px] z-[60] origin-left" style={{ scaleX: progress, backgroundColor: "var(--heart)" }} />
       <Navbar />
@@ -1106,7 +1106,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="border-t py-10 px-6">
+      <footer className="border-t py-5 sm:py-10 px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-muted-foreground">
           <div>© 2026 Bhavana Sivakumar, PhD — All rights reserved</div>
           <div className="font-mono text-xs">Built with Next.js · shadcn/ui · Motion</div>

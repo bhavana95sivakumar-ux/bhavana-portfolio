@@ -12,7 +12,7 @@ export type Stats = {
 
 export const FALLBACK_STATS: Stats = {
   publications: 27,
-  citations: 312,
+  citations: 364,
   hIndex: 11,
   i10Index: 12,
   journalsReviewed: JOURNALS_REVIEWED,
