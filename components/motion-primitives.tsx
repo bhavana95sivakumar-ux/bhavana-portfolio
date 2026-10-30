@@ -5,20 +5,40 @@ import { motion, useInView, useMotionValue, useScroll, useSpring, useTransform, 
 
 const baseEase = [0.22, 1, 0.36, 1] as const;
 
+/**
+ * Built once at module scope. Minting a motion component during render
+ * returns a fresh component type each time, which remounts the subtree and
+ * throws away its DOM on every parent render.
+ */
+const MOTION_TAGS = {
+  div: motion.div,
+  section: motion.section,
+  article: motion.article,
+  aside: motion.aside,
+  header: motion.header,
+  footer: motion.footer,
+  ul: motion.ul,
+  li: motion.li,
+  p: motion.p,
+  span: motion.span,
+} as const;
+
+type MotionTagName = keyof typeof MOTION_TAGS;
+
 export function FadeIn({
   children,
   delay = 0,
   y = 20,
   className,
-  as: Tag = "div",
+  as = "div",
 }: {
   children: React.ReactNode;
   delay?: number;
   y?: number;
   className?: string;
-  as?: React.ElementType;
+  as?: MotionTagName;
 }) {
-  const MotionTag = motion(Tag);
+  const MotionTag = MOTION_TAGS[as] ?? MOTION_TAGS.div;
   return (
     <MotionTag
       initial={{ opacity: 0, y }}
@@ -82,7 +102,7 @@ export function TextReveal({ text, className, delay = 0 }: { text: string; class
   );
 }
 
-export function CountUp({ to, suffix = "", duration = 1.6 }: { to: number; suffix?: string; duration?: number }) {
+export function CountUp({ to, suffix = "" }: { to: number; suffix?: string }) {
   const ref = React.useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
   const mv = useMotionValue(0);
@@ -93,14 +113,9 @@ export function CountUp({ to, suffix = "", duration = 1.6 }: { to: number; suffi
     if (inView) mv.set(to);
   }, [inView, to, mv]);
 
-  // Initial render to avoid hydration flash
-  const [, force] = React.useState(0);
-  React.useEffect(() => {
-    const unsub = rounded.on("change", () => force((n) => n + 1));
-    return unsub;
-  }, [rounded]);
-
-  return <motion.span ref={ref}>{rounded.get()}</motion.span>;
+  // The motion value is rendered directly: Motion writes each frame straight
+  // to the DOM node, so the count animates without re-rendering React.
+  return <motion.span ref={ref}>{rounded}</motion.span>;
 }
 
 export function Spotlight() {
@@ -232,17 +247,50 @@ export function Tilt3D({
   );
 }
 
-export function Marquee({ children, duration = 30 }: { children: React.ReactNode; duration?: number }) {
+export function Marquee({
+  children,
+  duration = 30,
+  label = "marquee",
+}: {
+  children: React.ReactNode;
+  duration?: number;
+  label?: string;
+}) {
+  // Continuous motion needs a way to stop it. It also pauses on hover and on
+  // keyboard focus so the strip can be read without chasing it.
+  const [playing, setPlaying] = React.useState(true);
+  const [hovered, setHovered] = React.useState(false);
+  const running = playing && !hovered;
+
   return (
-    <div className="relative overflow-hidden py-2" style={{ maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)" }}>
-      <motion.div
-        className="flex gap-6 whitespace-nowrap"
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{ duration, repeat: Infinity, ease: "linear" }}
+    <div className="relative">
+      <div
+        className="relative overflow-hidden py-2"
+        style={{ maskImage: "linear-gradient(to right, transparent, black 10%, black 90%, transparent)" }}
+        onPointerEnter={() => setHovered(true)}
+        onPointerLeave={() => setHovered(false)}
+        onFocusCapture={() => setHovered(true)}
+        onBlurCapture={() => setHovered(false)}
       >
-        {children}
-        {children}
-      </motion.div>
+        <motion.div
+          className="flex gap-6 whitespace-nowrap"
+          animate={running ? { x: ["0%", "-50%"] } : undefined}
+          transition={{ duration, repeat: Infinity, ease: "linear" }}
+        >
+          {children}
+          {children}
+        </motion.div>
+      </div>
+      <div className="mt-3 flex justify-center">
+        <button
+          type="button"
+          onClick={() => setPlaying((v) => !v)}
+          aria-pressed={!playing}
+          className="inline-flex items-center gap-1.5 rounded-full border border-border/60 px-3 py-1 text-[11px] font-mono uppercase tracking-wider text-muted-foreground outline-none transition-colors duration-200 hover:border-foreground/40 hover:text-foreground focus-visible:ring-2 focus-visible:ring-[var(--heart)] focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+        >
+          {playing ? `Pause ${label}` : `Play ${label}`}
+        </button>
+      </div>
     </div>
   );
 }

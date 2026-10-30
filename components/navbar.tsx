@@ -20,6 +20,7 @@ const links = [
   { href: "#experience", label: "Experience" },
   { href: "#honors", label: "Honors" },
   { href: "#publications", label: "Publications" },
+  { href: "#service", label: "Service" },
   { href: "#contact", label: "Contact" },
 ];
 
@@ -45,20 +46,20 @@ export function Navbar() {
   return (
     <header className="fixed top-0 inset-x-0 z-50 border-b border-border/40 bg-background/70 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
       <div className="max-w-6xl mx-auto h-14 px-6 flex items-center justify-between">
-        <Link href="#top" className="flex items-center gap-2 font-semibold tracking-tight">
+        <Link href="#top" className="flex items-center gap-2 rounded-md font-semibold tracking-tight outline-none focus-visible:ring-2 focus-visible:ring-[var(--heart)]">
           <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-gradient-to-br from-foreground to-foreground/60 text-background text-xs font-bold">
             BS
           </span>
           <span className="hidden sm:inline">Dr. Bhavana Sivakumar</span>
         </Link>
-        <nav className="hidden md:flex items-center gap-1 text-sm relative">
+        <nav aria-label="Primary" className="hidden md:flex items-center gap-1 text-sm relative">
           {links.map((l) => {
             const isActive = active === l.href;
             return (
               <Link
                 key={l.href}
                 href={l.href}
-                className={`relative px-3 py-2 rounded-md transition ${
+                className={`relative px-3 py-2 rounded-md transition-colors duration-200 outline-none focus-visible:ring-2 focus-visible:ring-[var(--heart)] ${
                   isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
@@ -76,7 +77,7 @@ export function Navbar() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground hover:text-[#0A66C2] hover:bg-accent transition-colors"
+            className="inline-flex h-9 w-9 items-center justify-center rounded-md text-muted-foreground outline-none transition-colors hover:text-[#0A66C2] hover:bg-accent focus-visible:ring-2 focus-visible:ring-[var(--heart)]"
           >
             <Linkedin className="h-4 w-4" />
           </a>
@@ -86,22 +87,22 @@ export function Navbar() {
             >
               <Menu className="h-4 w-4" />
             </SheetTrigger>
-            <SheetContent side="right" className="w-72">
+            <SheetContent side="right" className="w-72 overscroll-contain">
               <SheetHeader>
                 <SheetTitle>Navigation</SheetTitle>
               </SheetHeader>
-              <div className="mt-4 flex flex-col gap-1 px-2">
+              <nav aria-label="Mobile" className="mt-4 flex flex-col gap-1 px-2">
                 {links.map((l) => (
                   <Link
                     key={l.href}
                     href={l.href}
                     onClick={() => setOpen(false)}
-                    className="px-3 py-2 rounded-md text-sm hover:bg-accent"
+                    className="px-3 py-2 rounded-md text-sm outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-[var(--heart)]"
                   >
                     {l.label}
                   </Link>
                 ))}
-              </div>
+              </nav>
             </SheetContent>
           </Sheet>
         </div>

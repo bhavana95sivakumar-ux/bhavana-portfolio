@@ -20,10 +20,46 @@ html {
   text-rendering: optimizeLegibility;
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
+  /* Native scrollbars, form controls and selection follow the dark theme. */
+  color-scheme: dark;
+}
+
+/* Kill the 300ms double-tap delay and the grey flash on tap. */
+html {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Suppress page rubber-banding on trackpads, but keep pull-to-refresh
+   on touch devices where it is the expected gesture. */
+@media (pointer: fine) {
+  html {
+    overscroll-behavior: none;
+  }
+}
+
+/* Anchored sections clear the fixed header when deep-linked. */
+[id] {
+  scroll-margin-top: 80px;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
+
+  /* Decorative loops stop entirely; everything else collapses to a
+     single frame so nothing travels across the screen. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .aurora-bg {
+    animation: none !important;
+  }
 }
 
 /* Section reveal via scroll-driven animation (where supported) */
@@ -222,57 +258,10 @@ h1 { letter-spacing: -0.035em; }
   filter: grayscale(1) contrast(1.02);
 }
 
-/* Aurora gradient that drifts */
-@keyframes aurora-drift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-}
+/* Aurora gradient blob. The drift is carried by a Motion transform on the
+   element itself — animating background-position here would repaint a
+   500px blurred layer every frame for no visible gain. */
 .aurora-bg {
   background: linear-gradient(120deg, var(--heart), var(--neon-violet), var(--neon-cyan), var(--neon-pink), var(--heart));
   background-size: 300% 300%;
-  animation: aurora-drift 18s ease-in-out infinite;
-}
-.aurora-text {
-  background: linear-gradient(120deg, var(--heart), var(--neon-violet), var(--neon-cyan), var(--neon-pink), var(--heart));
-  background-size: 300% 300%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: aurora-drift 12s ease-in-out infinite;
-}
-
-/* DNA helix-like rotating dots */
-@keyframes orbit {
-  0% { transform: rotate(0deg) translateX(0); }
-  100% { transform: rotate(360deg) translateX(0); }
-}
-
-/* Scanline shimmer */
-@keyframes scan {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(200%); }
-}
-.scanline::after {
-  content: "";
-  position: absolute; inset: 0;
-  background: linear-gradient(180deg, transparent 0%, var(--heart-soft) 50%, transparent 100%);
-  animation: scan 3.5s linear infinite;
-  pointer-events: none;
-  mix-blend-mode: screen;
-}
-
-/* Glow pulse */
-@keyframes glow-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 var(--heart-soft), 0 0 30px 0 var(--heart-soft); }
-  50% { box-shadow: 0 0 0 12px transparent, 0 0 60px 8px var(--heart-soft); }
-}
-.glow-pulse { animation: glow-pulse 3s ease-in-out infinite; }
-
-/* Conic gradient ring */
-@keyframes conic-rotate {
-  to { transform: rotate(360deg); }
-}
-.conic-ring {
-  background: conic-gradient(from 0deg, var(--heart), var(--neon-violet), var(--neon-cyan), var(--neon-pink), var(--heart));
-  animation: conic-rotate 8s linear infinite;
 }

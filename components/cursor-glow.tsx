@@ -11,7 +11,10 @@ export function CursorGlow() {
   const [enabled, setEnabled] = React.useState(false);
 
   React.useEffect(() => {
+    // Pointer-only decoration, and pure motion — skip it on touch and
+    // whenever the visitor has asked for reduced motion.
     if (window.matchMedia("(hover: none)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     setEnabled(true);
     const move = (e: MouseEvent) => {
       x.set(e.clientX);

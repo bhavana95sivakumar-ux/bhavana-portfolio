@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
-import { FadeIn, Stagger, StaggerItem, TextReveal, CountUp, Spotlight, Marquee, Magnetic, EKGLine, HeartbeatIcon, DnaHelix, Tilt3D, Parallax, ScrollReveal } from "@/components/motion-primitives";
+import { FadeIn, Stagger, StaggerItem, TextReveal, CountUp, Spotlight, Marquee, Magnetic, EKGLine, HeartbeatIcon, Tilt3D, Parallax } from "@/components/motion-primitives";
 import { FALLBACK_STATS, type Stats } from "@/lib/stats-config";
 import { cn } from "@/lib/utils";
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
@@ -69,7 +69,7 @@ const publications: Pub[] = [
   { title: "PM2.5-Induced Cardiac Structural Modifications and Declined Pro-Survival Signalling Pathways", journal: "Cells", year: 2023, cites: 5, authors: "Sivakumar B, Ali N, Ahmad SF, Nadeem A, Waseem M, Kurian GA" },
   { title: "PM2.5 from diesel exhaust attenuated fisetin mediated cytoprotection in H9c2 cardiomyocytes", journal: "Drug and Chemical Toxicology", year: 2023, cites: 11, authors: "Sivakumar B, Kurian GA" },
   { title: "Recent advances in potential of Fisetin in the management of myocardial ischemia-reperfusion injury – A systematic review", journal: "Phytomedicine", year: 2022, cites: 37, authors: "Prem PN, Sivakumar B, Boovarahan SR, Kurian GA" },
-  { title: "Long-term administration of fisetin was not as effective as short term in ameliorating IR injury in isolated rat heart", journal: "Naunyn-Schmiedeberg's Archives of Pharmacology", year: 2022, cites: 5, authors: "Prem PN, Sivakumar B, Boovarahan SR, Kurian GA" },
+  { title: "Long-term administration of fisetin was not as effective as short term in ameliorating IR injury in isolated rat heart", journal: "Naunyn-Schmiedeberg’s Archives of Pharmacology", year: 2022, cites: 5, authors: "Prem PN, Sivakumar B, Boovarahan SR, Kurian GA" },
   { title: "Consequential Impact of Particulate Matter Linked Inter-Fibrillar Mitochondrial Dysfunction", journal: "Biology (Basel)", year: 2022, cites: 21, authors: "Sivakumar B, AlAsmari AF, Ali N, Waseem M, Kurian GA" },
   { title: "Fisetin Preserves Interfibrillar Mitochondria to Protect Against Myocardial Ischemia-Reperfusion Injury", journal: "Cell Biochemistry and Biophysics", year: 2022, cites: 22, authors: "Shanmugam K, Prem PN, Boovarahan SR, Sivakumar B, Kurian GA" },
   { title: "PM2.5 Exposure Lowers Mitochondrial Endurance During Cardiac Recovery in a Rat Model of Myocardial Infarction", journal: "Cardiovascular Toxicology", year: 2022, cites: 17, authors: "Sivakumar B, Kurian GA" },
@@ -136,12 +136,12 @@ const experience = [
 
 const education = [
   { degree: "Ph.D. Biomedical Science", uni: "SASTRA Deemed University", year: "2024", project: "PM2.5 in the respirable air; heart at risk — cardiovascular impact and cardio-protection strategies" },
-  { degree: "M.Sc. Human Genetics & Molecular Biology", uni: "Bharathiar University", year: "2018", project: "Cytogenetical & molecular analysis of ApoE gene in Alzheimer's patients" },
+  { degree: "M.Sc. Human Genetics & Molecular Biology", uni: "Bharathiar University", year: "2018", project: "Cytogenetical & molecular analysis of ApoE gene in Alzheimer’s patients" },
   { degree: "B.Sc. Zoology", uni: "Mahatma Gandhi University", year: "2016", project: "Migration patterns of Chestnut-headed Bee-eaters in Kerala" },
 ];
 
 const honors = [
-  { year: "2024", title: "Chancellor's Best PhD Thesis Award in Sciences", org: "SASTRA University, India" },
+  { year: "2024", title: "Chancellor’s Best PhD Thesis Award in Sciences", org: "SASTRA University, India" },
   { year: "2023", title: "ICMR Senior Research Fellowship", org: "Indian Council of Medical Research" },
   { year: "2018", title: "Third Rank — M.Sc. Program", org: "Bharathiar University, India" },
   { year: "2017", title: "Best Science Magazine Award", org: "Zoological Society of Kerala — Oikos'16" },
@@ -352,11 +352,51 @@ function MobileAwardsTimeline({ honors }: { honors: { title: string; org: string
   );
 }
 
+const YEAR_FILTER_EVENT = "publication-year-change";
+
+/**
+ * The publications filter lives in the URL, so a year can be linked, shared
+ * and reached with the Back button. The URL is the source of truth — read
+ * through useSyncExternalStore so the server renders "all" and the client
+ * picks up ?year= on hydration without a second render pass.
+ */
+function usePublicationYear() {
+  const subscribe = React.useCallback((onChange: () => void) => {
+    window.addEventListener("popstate", onChange);
+    window.addEventListener(YEAR_FILTER_EVENT, onChange);
+    return () => {
+      window.removeEventListener("popstate", onChange);
+      window.removeEventListener(YEAR_FILTER_EVENT, onChange);
+    };
+  }, []);
+
+  const value = React.useSyncExternalStore(
+    subscribe,
+    () => {
+      const y = new URLSearchParams(window.location.search).get("year");
+      return y && years.includes(Number(y)) ? y : "all";
+    },
+    () => "all"
+  );
+
+  const set = React.useCallback((next: string) => {
+    const url = new URL(window.location.href);
+    if (next === "all") url.searchParams.delete("year");
+    else url.searchParams.set("year", next);
+    window.history.pushState(null, "", url);
+    window.dispatchEvent(new Event(YEAR_FILTER_EVENT));
+  }, []);
+
+  return [value, set] as const;
+}
+
 export default function Home() {
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.3 });
   const heroY = useTransform(scrollYProgress, [0, 0.3], [0, -80]);
   const heroOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0.4]);
+
+  const [pubYear, setPubYear] = usePublicationYear();
 
   const [stats, setStats] = React.useState<Stats>(FALLBACK_STATS);
   React.useEffect(() => {
@@ -373,11 +413,16 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-screen pb-20 md:pb-0">
+    <div className="min-h-screen pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-0">
       <CursorGlow />
-      <motion.div className="fixed top-0 left-0 right-0 h-[2px] z-[60] origin-left" style={{ scaleX: progress, backgroundColor: "var(--heart)" }} />
+      <motion.div
+        aria-hidden
+        className="fixed top-0 left-0 right-0 h-[2px] z-[60] origin-left"
+        style={{ scaleX: progress, backgroundColor: "var(--heart)" }}
+      />
       <Navbar />
       <SectionRail />
+      <main id="main">
 
       {/* Hero */}
       <section id="top" className="relative pt-24 sm:pt-32 pb-16 sm:pb-24 px-5 sm:px-6 overflow-hidden">
@@ -483,14 +528,16 @@ export default function Home() {
 
                   {/* Identity block */}
                   <div className="relative px-5 pt-2 pb-5">
-                    <motion.h2
-                      className="text-2xl font-bold tracking-tight leading-tight bg-gradient-to-br from-foreground via-foreground to-foreground/70 bg-clip-text text-transparent"
+                    {/* Not a heading: the name is already the <h1> below, and
+                        an <h2> here would precede it in the document order. */}
+                    <motion.p
+                      className="text-2xl font-bold tracking-tight leading-tight text-pretty bg-gradient-to-br from-foreground via-foreground to-foreground/70 bg-clip-text text-transparent"
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4, duration: 0.6 }}
                     >
                       Dr. Bhavana Sivakumar
-                    </motion.h2>
+                    </motion.p>
                     <motion.div
                       className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground"
                       initial={{ opacity: 0 }}
@@ -636,7 +683,7 @@ export default function Home() {
                     <div className="flex items-center gap-2 text-muted-foreground"><GraduationCap className="h-3.5 w-3.5" /> PhD, SASTRA University (2024)</div>
                     <div className="flex items-center gap-2 text-muted-foreground"><BookOpen className="h-3.5 w-3.5" /> {stats.publications} publications</div>
                     <div className="flex items-center gap-2 text-muted-foreground"><Quote className="h-3.5 w-3.5" /> {stats.citations} citations · h-index {stats.hIndex}</div>
-                    <div className="flex items-center gap-2 text-muted-foreground"><Award className="h-3.5 w-3.5" /> Chancellor's Best PhD Thesis, SASTRA 2024</div>
+                    <div className="flex items-center gap-2 text-muted-foreground"><Award className="h-3.5 w-3.5" /> Chancellor’s Best PhD Thesis, SASTRA 2024</div>
                     <div className="flex items-center gap-2 text-muted-foreground"><Award className="h-3.5 w-3.5" /> ICMR Senior Research Fellowship</div>
                   </div>
                 </CardContent>
@@ -669,7 +716,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-12">
           <FadeIn>
             <div className="text-xs font-mono text-muted-foreground mb-2">01 — ABOUT</div>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Background</h2>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-balance">Background</h2>
             <p className="mt-4 text-sm text-muted-foreground">
               A translational researcher bridging molecular pharmacology, mitochondrial biology, and cardiac pathology.
             </p>
@@ -693,7 +740,7 @@ export default function Home() {
             <p>
               Previously, at the University of Cincinnati, she investigated immune-mediated mechanisms in
               diabetic cardiomyopathy. Her doctoral research at SASTRA University focused on cardiovascular
-              injury and therapeutic intervention, earning her the Chancellor's Best PhD Thesis Award in Sciences in 2024.
+              injury and therapeutic intervention, earning her the Chancellor’s Best PhD Thesis Award in Sciences in 2024.
             </p>
             <p>
               Across her academic career, Dr. Sivakumar has developed expertise in cardiovascular disease
@@ -714,7 +761,7 @@ export default function Home() {
         {/* Techniques marquee */}
         <div className="max-w-6xl mx-auto mt-12">
           <div className="text-xs font-mono text-muted-foreground mb-4 text-center">CORE TECHNIQUES</div>
-          <Marquee duration={45}>
+          <Marquee duration={45} label="techniques">
             {techniques.map((t, i) => (
               <span key={i} className="text-sm text-muted-foreground px-4 py-2 rounded-full border border-border/60 bg-background/50 shrink-0">
                 {t}
@@ -734,7 +781,7 @@ export default function Home() {
               <div className="text-xs font-mono text-[var(--heart)] mb-2 flex items-center gap-2">
                 <HeartbeatIcon size={12} /> 02 — RESEARCH
               </div>
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Focus areas</h2>
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-balance">Focus areas</h2>
             </div>
             <Badge variant="secondary" className="gap-1.5">
               <Sparkles className="h-3 w-3" /> Interdisciplinary
@@ -799,7 +846,7 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <FadeIn>
             <div className="text-xs font-mono text-muted-foreground mb-2">03 — EXPERIENCE</div>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-12">Career journey</h2>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-balance mb-12">Career journey</h2>
           </FadeIn>
           <div className="relative">
             <motion.div
@@ -887,7 +934,7 @@ export default function Home() {
               <div className="text-xs font-mono text-[var(--heart)] mb-2 flex items-center gap-2">
                 <HeartbeatIcon size={12} /> 04 — HONORS
               </div>
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-2">Awards</h2>
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-balance mb-2">Awards</h2>
               <p className="text-sm text-muted-foreground mb-6">A lifetime of recognition for excellence in research and academics.</p>
             </FadeIn>
 
@@ -954,7 +1001,7 @@ export default function Home() {
           <div>
             <FadeIn>
               <div className="text-xs font-mono text-muted-foreground mb-2">05 — TEACHING</div>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-8 inline-flex items-center gap-3">
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-balance mb-8 inline-flex items-center gap-3">
                 Workshops <Users className="h-7 w-7" />
               </h2>
             </FadeIn>
@@ -986,11 +1033,11 @@ export default function Home() {
       <section id="publications" className="py-16 sm:py-24 px-5 sm:px-6 border-t bg-muted/30">
         <div className="max-w-6xl mx-auto">
           <FadeIn>
-            <div className="text-xs font-mono text-muted-foreground mb-2">07 — PUBLICATIONS</div>
+            <div className="text-xs font-mono text-muted-foreground mb-2">06 — PUBLICATIONS</div>
           </FadeIn>
           <FadeIn delay={0.1} className="flex items-end justify-between mb-10 flex-wrap gap-4">
             <div>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Research output</h2>
+              <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-balance">Research output</h2>
               <p className="mt-2 text-muted-foreground max-w-xl">
                 {stats.publications} peer-reviewed papers, {stats.citations} citations, h-index {stats.hIndex}, i10-index {stats.i10Index} — across cardiovascular
                 pharmacology, mitochondrial biology, and environmental cardiotoxicology.
@@ -1020,7 +1067,7 @@ export default function Home() {
             </div>
           </FadeIn>
 
-          <Tabs defaultValue="all">
+          <Tabs value={pubYear} onValueChange={(v) => setPubYear(String(v))}>
             <TabsList className="flex-wrap h-auto">
               <TabsTrigger value="all">All ({publications.length})</TabsTrigger>
               {years.map((y) => (
@@ -1041,8 +1088,8 @@ export default function Home() {
       <section id="service" className="py-16 sm:py-24 px-5 sm:px-6 border-t">
         <div className="max-w-6xl mx-auto">
           <FadeIn>
-            <div className="text-xs font-mono text-muted-foreground mb-2">06 — SERVICE</div>
-            <h3 className="text-xl md:text-2xl font-semibold tracking-tight mb-6">Peer reviewer</h3>
+            <div className="text-xs font-mono text-muted-foreground mb-2">07 — SERVICE</div>
+            <h2 className="text-xl md:text-2xl font-semibold tracking-tight text-balance mb-6">Peer Reviewer</h2>
             <div className="flex flex-wrap gap-2">
               {reviewerJournals.map((j) => (
                 <Badge key={j} variant="outline" className="font-normal py-1.5 px-3">{j}</Badge>
@@ -1065,7 +1112,7 @@ export default function Home() {
           </FadeIn>
           <div className="grid md:grid-cols-2 gap-12 items-start">
             <FadeIn>
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tight">Let&apos;s collaborate.</h2>
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-balance">Let’s collaborate.</h2>
               <p className="mt-4 text-muted-foreground text-lg leading-relaxed max-w-lg">
                 Open to research collaborations, speaking invitations, and mentorship in
                 cardiovascular pharmacology, mitochondrial biology, and environmental cardiotoxicology.
@@ -1108,6 +1155,8 @@ export default function Home() {
         </div>
       </section>
 
+      </main>
+
       <footer className="border-t py-5 sm:py-10 px-6">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-muted-foreground">
           <div>© 2026 Bhavana Sivakumar, PhD — All rights reserved</div>
@@ -1117,7 +1166,7 @@ export default function Home() {
 
       {/* Mobile floating quick-actions */}
       <motion.div
-        className="md:hidden fixed bottom-4 inset-x-4 z-50 flex items-center justify-between gap-2 rounded-2xl border border-border/60 bg-background/80 backdrop-blur-xl shadow-2xl shadow-[var(--heart-soft)] px-2 py-2"
+        className="md:hidden fixed bottom-[calc(1rem+env(safe-area-inset-bottom))] left-[calc(1rem+env(safe-area-inset-left))] right-[calc(1rem+env(safe-area-inset-right))] z-50 flex items-center justify-between gap-2 rounded-2xl border border-border/60 bg-background/80 backdrop-blur-xl shadow-2xl shadow-[var(--heart-soft)] px-2 py-2"
         initial={{ y: 80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 1.2, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
@@ -1183,20 +1232,36 @@ function PubList({ pubs }: { pubs: Pub[] }) {
             {rendered.map(({ p, itemHiddenOnMobile }) => (
               <StaggerItem key={p.title} className={cn(itemHiddenOnMobile && "hidden md:block")}>
                 <HoverCard>
-                  <HoverCardTrigger render={<div />}>
+                  {/* Focusable so the preview also opens on keyboard focus;
+                      the authors are repeated for assistive tech below, since
+                      a hover-only popup never reaches a screen reader. */}
+                  <HoverCardTrigger
+                    render={
+                      <div
+                        tabIndex={0}
+                        className="rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-[var(--heart)] focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                      />
+                    }
+                  >
                     <motion.div
                       whileHover={{ x: 4 }}
                       transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                      className="group relative flex items-start gap-3 p-3 rounded-lg border border-border/50 bg-background/60 hover:bg-background hover:border-[var(--heart)]/40 hover:shadow-md hover:shadow-[var(--heart-soft)] transition-all cursor-default h-full"
+                      className="group relative flex items-start gap-3 p-3 rounded-lg border border-border/50 bg-background/60 hover:bg-background hover:border-[var(--heart)]/40 hover:shadow-md hover:shadow-[var(--heart-soft)] transition-[background-color,border-color,box-shadow] duration-200 h-full"
                     >
                       <div className="mt-1 h-1.5 w-1.5 rounded-full bg-[var(--heart)]/50 group-hover:bg-[var(--heart)] group-hover:scale-150 transition-transform shrink-0" />
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-sm font-medium leading-snug line-clamp-2 group-hover:text-[var(--heart)] transition-colors">
+                        <h3 className="text-sm font-medium leading-snug text-pretty line-clamp-2 group-hover:text-[var(--heart)] transition-colors">
                           {p.title}
                         </h3>
                         <div className="mt-1 text-xs text-muted-foreground italic truncate">{p.journal}</div>
+                        {p.authors && <span className="sr-only">Authors: {p.authors}.</span>}
+                        <span className="sr-only">
+                          {p.year}
+                          {p.cites !== null ? `, ${p.cites} citations.` : ", citation count not yet available."}
+                        </span>
                       </div>
                       <Badge
+                        aria-hidden
                         variant="outline"
                         className="shrink-0 font-mono text-[10px] h-5 px-1.5 border-border/60 tabular-nums"
                       >
@@ -1256,7 +1321,7 @@ function ContactLink({ href, label, desc, icon: Icon }: { href: string; label: s
             <div className="h-8 w-8 rounded-md bg-muted flex items-center justify-center shrink-0 group-hover:bg-foreground group-hover:text-background transition-colors">
               <Icon className="h-3.5 w-3.5" />
             </div>
-            <ArrowRight className="h-3.5 w-3.5 text-muted-foreground -rotate-45 shrink-0 group-hover:rotate-0 group-hover:text-foreground transition-all duration-300" />
+            <ArrowRight className="h-3.5 w-3.5 text-muted-foreground -rotate-45 shrink-0 group-hover:rotate-0 group-hover:text-foreground transition-[transform,color] duration-300" />
           </div>
           <div className="font-semibold text-[13px] leading-tight truncate">{label}</div>
           <div className="text-[10px] text-muted-foreground leading-tight mt-0.5 truncate">{desc}</div>
@@ -1267,7 +1332,7 @@ function ContactLink({ href, label, desc, icon: Icon }: { href: string; label: s
             <div className="h-9 w-9 rounded-md bg-muted flex items-center justify-center group-hover:bg-foreground group-hover:text-background transition-colors">
               <Icon className="h-4 w-4" />
             </div>
-            <ArrowRight className="h-4 w-4 text-muted-foreground -rotate-45 group-hover:rotate-0 group-hover:text-foreground transition-all duration-300" />
+            <ArrowRight className="h-4 w-4 text-muted-foreground -rotate-45 group-hover:rotate-0 group-hover:text-foreground transition-[transform,color] duration-300" />
           </div>
           <div className="mt-4 font-semibold text-sm">{label}</div>
           <div className="text-xs text-muted-foreground mt-0.5">{desc}</div>
